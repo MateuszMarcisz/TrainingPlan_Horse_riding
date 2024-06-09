@@ -45,7 +45,7 @@ class TrainingPlanDay(models.TextChoices):
 
 
 class Horse(models.Model):
-    name = models.CharField(max_length=100)
+    name = models.CharField(max_length=255)
     description = models.TextField()
     owner = models.ForeignKey(User, on_delete=models.CASCADE)
 
