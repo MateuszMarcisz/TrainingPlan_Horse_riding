@@ -1,0 +1,38 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Treningi Konne | Homepage</title>
+    <link type="text/css" href="{% static 'base.css' %}" rel="stylesheet">
+</head>
+<body>
+    <div class="wrapper">
+        <div class="margin left"></div>
+        <div class="center">
+            <header class="topnav">
+                <div>
+                    <a href="/" class="active"><strong>Strona Główna</strong></a><a href="">Treningi</a>
+                    <a href="">Plany</a>
+                    <a href="">Plany treningowe</a>
+                    <a href="{% url 'test' %}">Testy</a>
+                </div>
+                <div>
+                    {% if user.is_authenticated %}
+                        <a class="user">Witaj {{ user }}!</a>
+                        <a href="{% url 'logout' %}">Wyloguj się</a>
+                    {% else %}
+                        <a href="{% url 'register' %}">Zarejestruj się</a>
+                        <a href="{% url 'login' %}">Zaloguj się</a>
+                    {% endif %}
+                </div>
+            </header>
+            <div class="content">
+                {% block content %}
+                {% endblock %}
+            </div>
+        </div>
+        <div class="margin right"></div>
+    </div>
+</body>
+</html>
