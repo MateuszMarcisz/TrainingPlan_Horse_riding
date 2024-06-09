@@ -39,7 +39,6 @@ class LoginView(View):
             return render(request, "accounts/login.html", {'error': error})
 
 
-
 class LogoutView(View):
     def get(self, request):
         logout(request)
