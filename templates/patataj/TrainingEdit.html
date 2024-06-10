@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 {% block content %}
     <div class="centered">
-        <form method="POST" class="form-container-big big-add_form">
+        <form method="POST" class="form-container-big big-add_form transparency">
             {% csrf_token %}
             <h1 class="big-title">Edycja Treningu {{ training.name }}</h1>
             <br>

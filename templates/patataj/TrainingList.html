@@ -15,7 +15,7 @@
         </div>
     {% endif %}
 
-    <form method="GET" class="form-container-inline">
+    <form method="GET" class="form-container-inline transparency">
         <div class="form-group-inline">
             <label for="name">Nazwa:</label>
             <input type="text" id="name" name="name" placeholder="Nazwa treningu">
@@ -44,7 +44,7 @@
     <h1 class="big-title">Lista Treningów</h1>
 
 
-    <div class="training-list">
+    <div class="training-list transparency">
      {% for training in page_object %}
             <div class="training-list-item">
                 <div class="training-header">

@@ -62,11 +62,22 @@ body {
     background-color: #E0FFFF;
 }
 
+/*.content {*/
+/*    background-color: whitesmoke;*/
+/*    margin-top: 0px;*/
+/*    padding: 20px;*/
+/*    flex-grow: 1;*/
+/*}*/
+
 .content {
-    background-color: whitesmoke;
-    margin-top: 0px;
+    background-image: url('images/mysz_vertical.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
     padding: 20px;
     flex-grow: 1;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Optional: to add a shadow effect */
+    /*color: #fff; !* Optional: to ensure text is readable over the image *!*/
 }
 
 .form-container {
@@ -302,4 +313,8 @@ body {
 
 .big-add_form {
     width: 100%;
+}
+
+.transparency {
+    opacity: 0.9
 }
