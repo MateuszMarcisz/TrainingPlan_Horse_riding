@@ -3,11 +3,11 @@
     <div class="centered">
         <form method="POST" class="form-container-big big-add_form">
             {% csrf_token %}
-            <h1 class="big-title">Nowy Trening</h1>
+            <h1 class="big-title">Edycja Treningu {{ training.name }}</h1>
             <br>
             <div class="form-group-big">
                 <label for="name">Nazwa:</label>
-                <input type="text" id="name" name="name" value="{{ name }}" placeholder="Nazwa treningu">
+                <input type="text" id="name" name="name" value="{{ name|default:training.name }}" placeholder="Nazwa treningu">
                 {% if errors.name %}
                     <br>
                     <span class="text-danger">{{ errors.name }}</span>
@@ -19,7 +19,7 @@
                 <select id="training_type" name="training_type" style="height: 30px">
                     <option value="">Wybierz typ</option>
                     {% for choice in training_type_choices %}
-                        <option value="{{ choice.0 }}" {% if choice.0 == training_type %}
+                        <option value="{{ choice.0 }}" {% if choice.0 == training_type|default:training.type %}
                                 selected {% endif %}>{{ choice.1 }}</option>
                     {% endfor %}
                 </select>
@@ -31,7 +31,7 @@
 
             <div class="form-group-big">
                 <label for="length">Długość (w minutach):</label>
-                <input type="number" id="length" value="{{ length }}" name="length"
+                <input type="number" id="length" value="{{ length|default:training.length}}" name="length"
                        placeholder="Długość treningu">
                 {% if errors.length %}
                     <br>
@@ -42,7 +42,7 @@
 
             <div class="form-group-big">
                 <label for="description">Opis:</label>
-                <textarea id="description" name="description" placeholder="Dodaj Opis" rows="5"></textarea>
+                <textarea id="description" name="description" placeholder="Dodaj Opis" rows="5">{{ description|default:training.description }}</textarea>
                 {% if errors.description %}
                     <br>
                     <span class="text-danger">{{ errors.description }}</span>
@@ -50,7 +50,7 @@
             </div>
 
             <div class="form-group-big centered">
-                <button type="submit" class="btn-inline">Dodaj</button>
+                <button type="submit" class="btn-inline">Edytuj</button>
             </div>
 
         </form>

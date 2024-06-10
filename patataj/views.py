@@ -1,6 +1,6 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.views import View
 from django.views.generic import TemplateView
 from django.contrib import messages
@@ -108,12 +108,64 @@ class AddTrainingView(LoginRequiredMixin, View):
         except Exception as e:
             return render(request, 'patataj/AddTraining.html', {
                 'errors': e,
-                'name': name,
-                'training_type': training_type,
-                'length': length,
-                'description': description,
                 'training_type_choices': training_type_choices
             })
 
 
+class DeleteTrainingView(LoginRequiredMixin, View):
+    def get(self, request, pk):
+        training = get_object_or_404(Training, pk=pk)
+        training.delete()
+        return redirect('training_list')
 
+
+class EditTrainingView(LoginRequiredMixin, View):
+    def get(self, request, pk):
+        training = get_object_or_404(Training, pk=pk)
+        training_type_choices = TrainingType.choices
+        return render(request, 'patataj/TrainingEdit.html', {
+            'training': training,
+            'training_type_choices': training_type_choices
+        })
+
+    def post(self, request, pk):
+        name = request.POST.get('name')
+        training_type = request.POST.get('training_type')
+        length = request.POST.get('length')
+        description = request.POST.get('description')
+        training_type_choices = TrainingType.choices
+        training = models.Training.objects.get(pk=pk)
+
+        errors = {}
+        if not name:
+            errors['name'] = 'Nazwa wymagana!'
+        if not training_type:
+            errors['training_type'] = 'Typ wymagany!'
+        if not length:
+            errors['length'] = 'Długość wymagana!'
+        if not description:
+            errors['description'] = 'Opis wymagany!'
+        if errors:
+            return render(request, 'patataj/TrainingEdit.html', {
+                'errors': errors,
+                'name': name,
+                'training_type': training_type,
+                'length': length,
+                'description': description,
+                'training_type_choices': training_type_choices,
+                'training': training
+            })
+
+        try:
+            training.name = name
+            training.type = training_type
+            training.length = length
+            training.description = description
+            training.save()
+            return redirect('training_detail', pk=training.pk)
+
+        except Exception as e:
+            return render(request, 'patataj/TrainingEdit.html', {
+                'errors': e,
+                'training_type_choices': training_type_choices
+            })

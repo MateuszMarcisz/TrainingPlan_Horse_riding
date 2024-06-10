@@ -51,11 +51,8 @@
                     <h2>{{ training.name }}</h2>
                     <div class="training-buttons">
                         <a href="{% url 'training_detail' training.id %}" class="btn-detail">Szczegóły</a>
-                        <a href="" class="btn-edit">Edytuj trening</a>
-                        <form method="POST" action="" style="display:inline;">
-                            {% csrf_token %}
-                            <button type="submit" class="btn-delete">Usuń trening</button>
-                        </form>
+                        <a href="{% url 'training_edit' training.id %}" class="btn-edit">Edytuj trening</a>
+                        <a href="{% url 'training_delete' training.id %}" class="btn-delete">Usuń trening</a>
                     </div>
                 </div>
                 <p>Typ:<br>{{ training.get_type_display }}</p>

@@ -265,3 +265,41 @@ body {
     align-items: center;
 }
 
+
+.form-container-big {
+    max-width: 800px;
+    margin: auto;
+    padding: 20px;
+    background: #f9f9f9;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.form-container h2 {
+    margin-bottom: 20px;
+}
+
+.form-group-big {
+    margin-bottom: 15px;
+}
+
+.form-group-big label {
+    display: block;
+    margin-bottom: 5px;
+}
+
+.form-group-big input {
+    width: 30%;
+    padding: 10px;
+    box-sizing: border-box;
+}
+
+.form-group-big textarea {
+    width: 100%;
+    padding: 10px;
+    box-sizing: border-box;
+}
+
+
+.big-add_form {
+    width: 100%;
+}
