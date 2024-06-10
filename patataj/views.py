@@ -1,6 +1,6 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.views import View
 from django.views.generic import TemplateView
 from django.contrib import messages
@@ -63,3 +63,57 @@ class TrainingDetailView(LoginRequiredMixin, View):
     def get(self, request, pk):
         training = models.Training.objects.get(pk=pk)
         return render(request, 'patataj/TrainingDetail.html', {'training': training})
+
+
+class AddTrainingView(LoginRequiredMixin, View):
+    def get(self, request):
+        training_type_choices = TrainingType.choices
+        return render(request, 'patataj/AddTraining.html', {'training_type_choices': training_type_choices})
+
+    def post(self, request):
+        name = request.POST.get('name')
+        training_type = request.POST.get('training_type')
+        length = request.POST.get('length')
+        description = request.POST.get('description')
+        training_type_choices = TrainingType.choices
+
+        errors = {}
+        if not name:
+            errors['name'] = 'Nazwa wymagana!'
+        if not training_type:
+            errors['training_type'] = 'Typ wymagany!'
+        if not length:
+            errors['length'] = 'Długość wymagana!'
+        if not description:
+            errors['description'] = 'Opis wymagany!'
+        if errors:
+            return render(request, 'patataj/AddTraining.html', {
+                'errors': errors,
+                'name': name,
+                'training_type': training_type,
+                'length': length,
+                'description': description,
+                'training_type_choices': training_type_choices
+            })
+
+        try:
+            training = models.Training.objects.create(
+                name=name,
+                type=training_type,
+                length=length,
+                description=description
+            )
+            return redirect('training_detail', pk=training.pk)
+
+        except Exception as e:
+            return render(request, 'patataj/AddTraining.html', {
+                'errors': e,
+                'name': name,
+                'training_type': training_type,
+                'length': length,
+                'description': description,
+                'training_type_choices': training_type_choices
+            })
+
+
+

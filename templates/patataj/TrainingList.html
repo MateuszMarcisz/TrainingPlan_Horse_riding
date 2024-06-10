@@ -4,7 +4,7 @@
 
     <div class="filter-and-add">
         <h2>Filtruj</h2>
-        <a href="" class="btn-add">Dodaj trening</a>
+        <a href="{% url 'training_add' %}" class="btn-add">Dodaj trening</a>
     </div>
 
     {% if messages %}
@@ -23,7 +23,7 @@
 
         <div class="form-group-inline">
             <label for="training_type">Typ:</label>
-            <select id="training_type" name="training_type">
+            <select id="training_type" name="training_type" style="height: 30px">
                 <option value="">Wybierz typ</option>
                 {% for choice in training_type_choices %}
                     <option value="{{ choice.0 }}">{{ choice.1 }}</option>
