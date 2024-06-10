@@ -19,16 +19,17 @@ class Training(models.Model):
         choices=TrainingType.choices,
     )
     description = models.TextField()
-    length = models.DurationField()
+    length = models.IntegerField()
 
     def __str__(self):
-        return f"{self.name} typu {self.type} o długości {self.length}"
+        return f"{self.name} typu {self.type} o długości {self.length} min"
 
 
 class Plan(models.Model):
     name = models.CharField(max_length=100)
     description = models.TextField()
     trainings = models.ManyToManyField(Training, through='TrainingPlan')
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
 
     def __str__(self):
         return self.name
@@ -60,15 +61,9 @@ class Trainer(models.Model):
         choices=TrainingType.choices
     )
     description = models.TextField()
-    users = models.ManyToManyField(User, through='UserTrainer')
 
     def __str__(self):
         return f"{self.name} trening: {self.training_type}"
-
-
-class UserTrainer(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
-    trainer = models.ForeignKey(Trainer, on_delete=models.CASCADE)
 
 
 class TrainingPlan(models.Model):

@@ -1,0 +1,71 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+    <div class="filter-and-add">
+        <h2>Filtruj</h2>
+        <a href="" class="btn-add">Dodaj trening</a>
+    </div>
+
+    {% if messages %}
+        <div class="alert alert-danger">
+            {% for message in messages %}
+                <span class="text-danger">{{ message }}</span>
+            {% endfor %}
+        </div>
+    {% endif %}
+
+    <form method="GET" class="form-container-inline">
+        <div class="form-group-inline">
+            <label for="name">Nazwa:</label>
+            <input type="text" id="name" name="name" placeholder="Nazwa treningu">
+        </div>
+
+        <div class="form-group-inline">
+            <label for="training_type">Typ:</label>
+            <select id="training_type" name="training_type">
+                <option value="">Wybierz typ</option>
+                {% for choice in training_type_choices %}
+                    <option value="{{ choice.0 }}">{{ choice.1 }}</option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <div class="form-group-inline">
+            <label for="min_length">Długość:</label>
+            <input type="number" id="min_length" value="0" name="min_length" placeholder="Minimalna długość">
+        </div>
+        <div class="form-group-inline">
+            <button type="submit" class="btn-inline">Filtruj</button>
+        </div>
+    </form>
+
+
+    <h1 class="big-title">Lista Treningów</h1>
+
+
+    <div class="training-list">
+        {% for training in page_object %}
+            <div class="training-list-item">
+                <h2>{{ training.name }}</h2>
+                <p>Typ:<br>{{ training.get_type_display }}</p>
+                <p>Opis:<br>{{ training.description }}</p>
+                <p>Długość:<br>{{ training.length }} min</p>
+            </div>
+        {% endfor %}
+
+        <div>
+            {% if page_object.has_previous %}
+                <a href="?page=1">&laquo; Pierwsza</a>
+                <a href="?page={{ page_object.previous_page_number }}">Poprzednia</a>
+            {% endif %}
+
+            <span>Strona {{ page_object.number }} z {{ page_object.paginator.num_pages }}</span>
+
+            {% if page_object.has_next %}
+                <a href="?page={{ page_object.next_page_number }}">Następna</a>
+                <a href="?page={{ page_object.paginator.num_pages }}">Ostatnia &raquo;</a>
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}
