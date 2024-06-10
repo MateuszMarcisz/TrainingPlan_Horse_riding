@@ -20,7 +20,7 @@ class TestView(LoginRequiredMixin, View):
         return render(request, 'patataj/test.html')
 
 
-class TrainingListView(LoginRequiredMixin, View):
+class TrainingListView(View):
     def get(self, request):
         name = request.GET.get('name', '')
         training_type = request.GET.get('training_type', '')
@@ -43,8 +43,8 @@ class TrainingListView(LoginRequiredMixin, View):
             messages.error(request, str(e))
 
         # Pagination
-        paginator = Paginator(trainings, 10)
-        page_number = request.GET.get('page')
+        paginator = Paginator(trainings, 5)
+        page_number = request.GET.get('page', 1)
 
         try:
             page_object = paginator.page(page_number)
@@ -59,7 +59,7 @@ class TrainingListView(LoginRequiredMixin, View):
         })
 
 
-class TrainingDetailView(LoginRequiredMixin, View):
+class TrainingDetailView(View):
     def get(self, request, pk):
         training = models.Training.objects.get(pk=pk)
         return render(request, 'patataj/TrainingDetail.html', {'training': training})
