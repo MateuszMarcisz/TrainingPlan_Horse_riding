@@ -149,7 +149,7 @@ body {
     background-color: #87CEFA;
     color: black;
     padding: 5px 20px;
-    border: none;
+    border: 2px solid #555555;
     cursor: pointer;
     display: block;
     margin-top: 10px;
@@ -200,15 +200,51 @@ body {
 }
 
 .btn-add {
-    background-color: #87CEFA;
+    background-color: #40E0D0;
     color: black;
     padding: 10px 20px;
-    border: none;
+    border: 2px solid #555555;
     cursor: pointer;
     font-size: 16px;
     text-decoration: none;
 }
 
 .btn-add:hover {
+    background-color: #E6E6FA;
+}
+
+.training-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.training-buttons {
+    display: flex;
+    gap: 10px;
+}
+
+.btn-edit {
+    background-color: #FFDAB9;
+    color: black;
+    padding: 5px 10px;
+    border: 2px solid #555555;
+    cursor: pointer;
+    font-size: 14px;
+    text-decoration: none;
+}
+
+.btn-delete {
+    background-color: #FF0000;
+    color: black;
+    padding: 5px 10px;
+    border: 2px solid #555555;
+    cursor: pointer;
+    font-size: 14px;
+    text-decoration: none;
+}
+
+.btn-edit:hover, .btn-delete:hover {
     background-color: #E6E6FA;
 }

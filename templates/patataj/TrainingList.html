@@ -45,9 +45,18 @@
 
 
     <div class="training-list">
-        {% for training in page_object %}
+     {% for training in page_object %}
             <div class="training-list-item">
-                <h2>{{ training.name }}</h2>
+                <div class="training-header">
+                    <h2>{{ training.name }}</h2>
+                    <div class="training-buttons">
+                        <a href="" class="btn-edit">Edytuj trening</a>
+                        <form method="POST" action="" style="display:inline;">
+                            {% csrf_token %}
+                            <button type="submit" class="btn-delete">Usuń trening</button>
+                        </form>
+                    </div>
+                </div>
                 <p>Typ:<br>{{ training.get_type_display }}</p>
                 <p>Opis:<br>{{ training.description }}</p>
                 <p>Długość:<br>{{ training.length }} min</p>
