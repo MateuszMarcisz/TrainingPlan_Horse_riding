@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+{% block content %}
+    <div class="training-list-item">
+        <div class="training-header">
+            <h2>{{ training.name }}</h2>
+            <div class="training-buttons">
+                <a href="" class="btn-edit">Edytuj trening</a>
+                <form method="POST" action="" style="display:inline;">
+                    {% csrf_token %}
+                    <button type="submit" class="btn-delete">Usuń trening</button>
+                </form>
+            </div>
+        </div>
+        <p>Typ:<br>{{ training.get_type_display }}</p>
+        <p>Opis:<br>{{ training.description }}</p>
+        <p>Długość:<br>{{ training.length }} min</p>
+    </div>
+
+{% endblock %}

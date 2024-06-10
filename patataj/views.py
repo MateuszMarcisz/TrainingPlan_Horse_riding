@@ -57,3 +57,9 @@ class TrainingListView(LoginRequiredMixin, View):
             'page_object': page_object,  # Pass paginated queryset to template
             'training_type_choices': training_type_choices
         })
+
+
+class TrainingDetailView(LoginRequiredMixin, View):
+    def get(self, request, pk):
+        training = models.Training.objects.get(pk=pk)
+        return render(request, 'patataj/TrainingDetail.html', {'training': training})

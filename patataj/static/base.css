@@ -245,6 +245,16 @@ body {
     text-decoration: none;
 }
 
-.btn-edit:hover, .btn-delete:hover {
+.btn-edit:hover, .btn-delete:hover, .btn-detail:hover {
     background-color: #E6E6FA;
+}
+
+.btn-detail {
+    background-color: #FFC0CB;
+    color: black;
+    padding: 5px 10px;
+    border: 2px solid #555555;
+    cursor: pointer;
+    font-size: 14px;
+    text-decoration: none;
 }

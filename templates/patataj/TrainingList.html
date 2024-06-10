@@ -50,6 +50,7 @@
                 <div class="training-header">
                     <h2>{{ training.name }}</h2>
                     <div class="training-buttons">
+                        <a href="{% url 'training_detail' training.id %}" class="btn-detail">Szczegóły</a>
                         <a href="" class="btn-edit">Edytuj trening</a>
                         <form method="POST" action="" style="display:inline;">
                             {% csrf_token %}
