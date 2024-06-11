@@ -39,7 +39,7 @@
                     <div class="training-buttons">
                         <a href="{% url 'plan_detail' plan.id %}" class="btn-detail">Szczegóły</a>
                         <a href="" class="btn-add-small">Dodaj trening do planu</a>
-                        <a href="" class="btn-edit">Edytuj Plan</a>
+                        <a href="{% url 'plan_edit' plan.id %}" class="btn-edit">Edytuj Plan</a>
                         <a href="{% url 'plan_delete' plan.id %}" class="btn-delete">Usuń Plan</a>
                     </div>
                 </div>

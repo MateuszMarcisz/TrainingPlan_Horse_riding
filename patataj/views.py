@@ -249,3 +249,37 @@ class DeletePlanView(UserPassesTestMixin, View):
         plan = get_object_or_404(Plan, pk=pk)
         plan.delete()
         return redirect('plan_list')
+
+
+class EditPlanView(UserPassesTestMixin, View):
+    def test_func(self):
+        plan = models.Plan.objects.get(pk=self.kwargs['pk'])
+        return self.request.user == plan.user
+
+    def get(self, request, pk):
+        plan = get_object_or_404(Plan, pk=pk)
+        return render(request, 'patataj/PlanEdit.html', {'plan': plan})
+
+    def post(self, request, pk):
+        plan = get_object_or_404(Plan, pk=pk)
+        name = request.POST.get('name')
+        description = request.POST.get('description')
+        errors = {}
+        if not name:
+            errors['name'] = 'Nazwa wymagana!'
+        if not description:
+            errors['description'] = 'Opis wymagany!'
+        if errors:
+            return render(request, 'patataj/PlanEdit.html', {
+                'errors': errors,
+                'name': name,
+                'description': description,
+                'plan': plan
+            })
+        try:
+            plan.name = name
+            plan.description = description
+            plan.save()
+            return redirect('plan_detail', pk=plan.pk)
+        except Exception as e:
+            return render(request, 'patataj/PlanEdit.html', {'errors': e})
