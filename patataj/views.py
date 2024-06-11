@@ -201,3 +201,36 @@ class PlanDetailView(UserPassesTestMixin, View):
     def get(self, request, pk):
         plan = get_object_or_404(Plan, pk=pk)
         return render(request, 'patataj/PlanDetail.html', {'plan': plan})
+
+
+class AddPlanView(LoginRequiredMixin, View):
+    def get(self, request):
+        return render(request, 'patataj/AddPlan.html')
+
+    def post(self, request):
+        name = request.POST.get('name')
+        description = request.POST.get('description')
+        errors = {}
+        if not name:
+            errors['name'] = 'Nazwa wymagana!'
+        if not description:
+            errors['description'] = 'Opis wymagany!'
+        if errors:
+            return render(request, 'patataj/AddPlan.html', {
+                'errors': errors,
+                'name': name,
+                'description': description,
+            })
+
+        try:
+            plan = models.Plan.objects.create(
+                name=name,
+                description=description,
+                user_id=request.user.id,
+            )
+            return redirect('plan_detail', pk=plan.pk)
+
+        except Exception as e:
+            return render(request, 'patataj/AddPlan.html', {
+                'errors': e,
+            })

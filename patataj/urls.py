@@ -12,4 +12,5 @@ urlpatterns = [
     path('training_edit/<int:pk>/', views.EditTrainingView.as_view(), name='training_edit'),
     path('plan_list/', views.PlanListView.as_view(), name='plan_list'),
     path('plan_detail/<int:pk>/', views.PlanDetailView.as_view(), name='plan_detail'),
+    path('plan_add/', views.AddPlanView.as_view(), name='plan_add'),
 ]
