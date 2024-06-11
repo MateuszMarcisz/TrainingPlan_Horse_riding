@@ -1,4 +1,5 @@
 import pytest
+from django.contrib.auth.models import User
 
 from patataj.models import Training
 
@@ -14,6 +15,12 @@ def trainings():
             length=30))
     return lst
 
+
 @pytest.fixture
 def training():
     return Training.objects.create(name="name", type="SK", description="description", length=30)
+
+
+@pytest.fixture
+def user():
+    return User.objects.create(username='test')

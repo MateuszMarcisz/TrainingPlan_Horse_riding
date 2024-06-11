@@ -318,3 +318,45 @@ body {
 .transparency {
     opacity: 0.9
 }
+
+a.btn-inline-cancel {
+    display: inline-block;
+    padding: 5px 20px;
+    border: 2px solid #555555;
+    cursor: pointer;
+    font-size: 16px;
+    background-color: #ffc107;
+    color: black;
+    text-decoration: none;
+    text-align: center;
+    line-height: normal;
+}
+
+a.btn-inline-cancel:hover {
+    background-color: #e0a800;
+}
+
+.btn-confirm {
+    display: inline-block;
+    padding: 5px 20px;
+    border: 2px solid #555555;
+    cursor: pointer;
+    font-size: 16px;
+    background-color: #FF0000;
+    color: black;
+    text-decoration: none;
+    text-align: center;
+    line-height: normal;
+}
+
+.btn-confirm:hover {
+    background-color: #FF4500;
+}
+
+.button-container {
+    text-align: center;
+}
+
+.button-container .btn-inline {
+    margin: 10px;
+}

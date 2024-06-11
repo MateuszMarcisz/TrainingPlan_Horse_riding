@@ -115,6 +115,10 @@ class AddTrainingView(LoginRequiredMixin, View):
 class DeleteTrainingView(LoginRequiredMixin, View):
     def get(self, request, pk):
         training = get_object_or_404(Training, pk=pk)
+        return render(request, 'patataj/DeleteConfirmation.html', {'training': training})
+
+    def post(self, request, pk):
+        training = get_object_or_404(Training, pk=pk)
         training.delete()
         return redirect('training_list')
 
