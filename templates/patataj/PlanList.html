@@ -1,0 +1,65 @@
+{#{% extends 'base.html' %}#}
+{#{% block content %}#}
+{#    {% for plan in page_object %}#}
+{#        {{ plan.name }}#}
+{#        {{ plan.description }}#}
+{#        {{ plan.user.username }}#}
+{##}
+{#    {% endfor %}#}
+{#    {% endblock %}#}
+
+{% extends 'base.html' %}
+
+{% block content %}
+
+    <div class="filter-and-add">
+        <a href="{% url 'training_add' %}" class="btn-add">Dodaj trening</a>
+        <a href="" class="btn-add">Dodaj Plan</a>
+        <a href="" class="btn-add">Dodaj trening do planu</a>
+    </div>
+
+    <form method="GET" class="form-container-inline transparency">
+        <h2>Filtruj</h2>
+        <div class="form-group-inline">
+            <label for="name">Nazwa:</label>
+            <input type="text" id="name" name="name" placeholder="Nazwa Planu">
+        </div>
+        <div class="form-group-inline">
+            <button type="submit" class="btn-inline">Filtruj</button>
+        </div>
+    </form>
+
+    <h1 class="big-title">Lista Planów</h1>
+
+    <div class="training-list transparency">
+        {% for plan in page_object %}
+            <div class="training-list-item">
+                <div class="training-header">
+                    <h2>{{ plan.name }}</h2>
+                    <div class="training-buttons">
+                        <a href="" class="btn-detail">Szczegóły</a>
+                        <a href="" class="btn-add-small">Dodaj trening do planu</a>
+                        <a href="" class="btn-edit">Edytuj Plan</a>
+                        <a href="" class="btn-delete">Usuń Plan</a>
+
+                    </div>
+                </div>
+                <p>Opis:<br>{{ plan.description }}</p>
+            </div>
+        {% endfor %}
+
+        <div>
+            {% if page_object.has_previous %}
+                <a href="?page=1">&laquo; Pierwsza</a>
+                <a href="?page={{ page_object.previous_page_number }}">Poprzednia</a>
+            {% endif %}
+
+            <span>Strona {{ page_object.number }} z {{ page_object.paginator.num_pages }}</span>
+
+            {% if page_object.has_next %}
+                <a href="?page={{ page_object.next_page_number }}">Następna</a>
+                <a href="?page={{ page_object.paginator.num_pages }}">Ostatnia &raquo;</a>
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}

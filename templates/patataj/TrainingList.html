@@ -3,8 +3,9 @@
 {% block content %}
 
     <div class="filter-and-add">
-        <h2>Filtruj</h2>
         <a href="{% url 'training_add' %}" class="btn-add">Dodaj trening</a>
+        <a href="" class="btn-add">Dodaj Plan</a>
+        <a href="" class="btn-add">Dodaj trening do planu</a>
     </div>
 
     {% if messages %}
@@ -16,7 +17,9 @@
     {% endif %}
 
     <form method="GET" class="form-container-inline transparency">
+
         <div class="form-group-inline">
+            <h2>Filtruj</h2>
             <label for="name">Nazwa:</label>
             <input type="text" id="name" name="name" placeholder="Nazwa treningu">
         </div>
@@ -45,7 +48,7 @@
 
 
     <div class="training-list transparency">
-     {% for training in page_object %}
+        {% for training in page_object %}
             <div class="training-list-item">
                 <div class="training-header">
                     <h2>{{ training.name }}</h2>

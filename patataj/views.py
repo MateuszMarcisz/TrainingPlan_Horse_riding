@@ -43,8 +43,8 @@ class TrainingListView(View):
             messages.error(request, str(e))
 
         # Pagination
-        paginator = Paginator(trainings, 5)
-        page_number = request.GET.get('page', 1)
+        paginator = Paginator(trainings, 5)  # we put 5 trainings per page
+        page_number = request.GET.get('page', 1)  # in case there is no page select 1
 
         try:
             page_object = paginator.page(page_number)
@@ -173,3 +173,21 @@ class EditTrainingView(LoginRequiredMixin, View):
                 'errors': e,
                 'training_type_choices': training_type_choices
             })
+
+
+class PlanListView(LoginRequiredMixin, View):
+    def get(self, request):
+        name = request.GET.get('name')
+        plans = models.Plan.objects.filter(user=request.user)
+        if name:
+            plans = plans.filter(name__icontains=name)
+        # see training list view for some explanation of pagination
+        paginator = Paginator(plans, 5)
+        page_number = request.GET.get('page', 1)
+        try:
+            page_object = paginator.page(page_number)
+        except PageNotAnInteger:
+            page_object = paginator.page(1)
+        except EmptyPage:
+            page_object = paginator.page(paginator.num_pages)
+        return render(request, 'patataj/PlanList.html', {'page_object': page_object})
