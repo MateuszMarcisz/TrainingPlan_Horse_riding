@@ -234,3 +234,18 @@ class AddPlanView(LoginRequiredMixin, View):
             return render(request, 'patataj/AddPlan.html', {
                 'errors': e,
             })
+
+
+class DeletePlanView(UserPassesTestMixin, View):
+    def test_func(self):
+        plan = models.Plan.objects.get(pk=self.kwargs['pk'])
+        return self.request.user == plan.user
+
+    def get(self, request, pk):
+        plan = get_object_or_404(Plan, pk=pk)
+        return render(request, 'patataj/DeletePlanConfirmation.html', {'plan': plan})
+
+    def post(self, request, pk):
+        plan = get_object_or_404(Plan, pk=pk)
+        plan.delete()
+        return redirect('plan_list')

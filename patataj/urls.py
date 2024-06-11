@@ -13,4 +13,5 @@ urlpatterns = [
     path('plan_list/', views.PlanListView.as_view(), name='plan_list'),
     path('plan_detail/<int:pk>/', views.PlanDetailView.as_view(), name='plan_detail'),
     path('plan_add/', views.AddPlanView.as_view(), name='plan_add'),
+    path('plan_delete/<int:pk>/', views.DeletePlanView.as_view(), name='plan_delete'),
 ]

@@ -2,13 +2,13 @@
 {% block content %}
     <div class="centered">
         <form method="POST" class="form-container-big transparency">
-            <h1 class="big-title">Usunięcie trening</h1>
-            <p>Czy jesteś pewien/pewna, że chcesz usunąć trening: </p>
-            <h2 class="centered">{{ training.name }}</h2>
+            <h1 class="big-title">Usunięcie Planu</h1>
+            <p>Czy jesteś pewien/pewna, że chcesz usunąć plan: </p>
+            <h2 class="centered">{{ plan.name }}</h2>
             {% csrf_token %}
             <div class="button-container">
                 <button type="submit" class="btn-inline btn-confirm">Potwierdzam</button>
-                <a href="{% url 'training_list' %}" class="btn-inline-cancel">Powrót do listy treningów</a>
+                <a href="{% url 'plan_list' %}" class="btn-inline-cancel">Powrót do listy planów</a>
             </div>
         </form>
     </div>
