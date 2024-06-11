@@ -1,4 +1,4 @@
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.shortcuts import render, redirect, get_object_or_404
 from django.views import View
@@ -6,7 +6,7 @@ from django.views.generic import TemplateView
 from django.contrib import messages
 
 from patataj import models
-from patataj.models import Training, TrainingType
+from patataj.models import Training, TrainingType, Plan
 
 
 # Create your views here.
@@ -191,3 +191,13 @@ class PlanListView(LoginRequiredMixin, View):
         except EmptyPage:
             page_object = paginator.page(paginator.num_pages)
         return render(request, 'patataj/PlanList.html', {'page_object': page_object})
+
+
+class PlanDetailView(UserPassesTestMixin, View):
+    def test_func(self):
+        plan = models.Plan.objects.get(pk=self.kwargs['pk'])
+        return self.request.user == plan.user
+
+    def get(self, request, pk):
+        plan = get_object_or_404(Plan, pk=pk)
+        return render(request, 'patataj/PlanDetail.html', {'plan': plan})

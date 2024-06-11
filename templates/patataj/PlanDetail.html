@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% block content %}
+    <div class="training-list-item transparency">
+        <h1 class="big-title">Szczegóły Planu</h1>
+        <div class="training-header">
+            <h2>{{ plan.name }}</h2>
+            <div class="training-buttons">
+                <a href="" class="btn-add-small">Dodaj trening do planu</a>
+                <a href="" class="btn-edit">Edytuj plan</a>
+                <a href="" class="btn-delete">Usuń plan</a>
+            </div>
+        </div>
+        <p>Opis:<br>{{ plan.description }}</p>
+    </div>
+
+{% endblock %}
