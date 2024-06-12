@@ -6,7 +6,7 @@ from django.views.generic import TemplateView
 from django.contrib import messages
 
 from patataj import models
-from patataj.models import Training, TrainingType, Plan, Horse
+from patataj.models import Training, TrainingType, Plan, Horse, Trainer
 
 
 # Create your views here.
@@ -393,3 +393,33 @@ class EditHorseView(UserPassesTestMixin, View):
             return redirect('horse_detail', pk=horse.pk)
         except Exception as e:
             return render(request, 'patataj/HorseEdit.html', {'errors': e})
+
+
+class TrainerListView(View):
+    def get(self, request):
+        name = request.GET.get('name', '')
+        training_type = request.GET.get('training_type', '')
+        trainers = Trainer.objects.all()
+        training_type_choices = TrainingType.choices
+
+        # Filtering
+        if name:
+            trainers = trainers.filter(name__icontains=name)
+        if training_type:
+            trainers = trainers.filter(training_type=training_type)
+
+        # Pagination
+        # see TrainingListView for more details
+        paginator = Paginator(trainers, 5)
+        page_number = request.GET.get('page', 1)
+        try:
+            page_object = paginator.page(page_number)
+        except PageNotAnInteger:
+            page_object = paginator.page(1)
+        except EmptyPage:
+            page_object = paginator.page(paginator.num_pages)
+
+        return render(request, 'patataj/TrainerList.html', {
+            'page_object': page_object,
+            'training_type_choices': training_type_choices
+        })

@@ -1,0 +1,70 @@
+{% extends 'base.html' %}
+{% block content %}
+
+    <div class="filter-and-add">
+        <a href="" class="btn-add">Nowy trener</a>
+    </div>
+
+    {% if messages %}
+        <div class="alert alert-danger">
+            {% for message in messages %}
+                <span class="text-danger">{{ message }}</span>
+            {% endfor %}
+        </div>
+    {% endif %}
+
+    <form method="GET" class="form-container-inline transparency">
+        <div class="form-group-inline">
+            <h2>Filtruj</h2>
+            <label for="name">Imię/Nazwisko:</label>
+            <input type="text" id="name" name="name" placeholder="Imię/Nazwisko trenera">
+        </div>
+
+        <div class="form-group-inline">
+            <label for="training_type">Typ:</label>
+            <select id="training_type" name="training_type" style="height: 30px">
+                <option value="">Wybierz typ treningu</option>
+                {% for choice in training_type_choices %}
+                    <option value="{{ choice.0 }}">{{ choice.1 }}</option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <div class="form-group-inline">
+            <button type="submit" class="btn-inline">Filtruj</button>
+        </div>
+    </form>
+
+    <h1 class="big-title">Lista Trenerów</h1>
+
+    <div class="training-list transparency">
+        {% for trainer in page_object %}
+            <div class="training-list-item">
+                <div class="training-header">
+                    <h2>{{ trainer.name }}</h2>
+                    <div class="training-buttons">
+                        <a href="" class="btn-detail">Szczegóły</a>
+                        <a href="" class="btn-edit">Edytuj</a>
+                        <a href="" class="btn-delete">Usuń</a>
+                    </div>
+                </div>
+                <p>Typ treningu:<br>{{ trainer.get_training_type_display }}</p>
+                <p>Opis:<br>{{ trainer.description }}</p>
+            </div>
+        {% endfor %}
+
+        <div>
+            {% if page_object.has_previous %}
+                <a href="?page=1">&laquo; Pierwsza</a>
+                <a href="?page={{ page_object.previous_page_number }}">Poprzednia</a>
+            {% endif %}
+
+            <span>Strona {{ page_object.number }} z {{ page_object.paginator.num_pages }}</span>
+
+            {% if page_object.has_next %}
+                <a href="?page={{ page_object.next_page_number }}">Następna</a>
+                <a href="?page={{ page_object.paginator.num_pages }}">Ostatnia &raquo;</a>
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}
