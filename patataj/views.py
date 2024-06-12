@@ -413,3 +413,9 @@ class TrainerListView(View):
             'page_object': page_object,
             'training_type_choices': training_type_choices
         })
+
+
+class TrainerDetailView(View):
+    def get(self, request, pk):
+        trainer = Trainer.objects.get(pk=pk)
+        return render(request, 'patataj/TrainerDetail.html', {'trainer': trainer})
