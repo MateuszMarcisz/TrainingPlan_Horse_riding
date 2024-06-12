@@ -9,6 +9,18 @@ from patataj import models
 from patataj.models import Training, TrainingType, Plan, Horse, Trainer
 
 
+def pagination(request, queryset, items_per_page=5):
+    paginator = Paginator(queryset, items_per_page)  # we define what should be paginated and how many elements per page
+    page_number = request.GET.get('page', 1)  # in case there is no page select 1
+    try:
+        page_object = paginator.page(page_number)
+    except PageNotAnInteger:  # handling annoying user manually changing stuff
+        page_object = paginator.page(1)
+    except EmptyPage:  # again, annoying user, when out of range page
+        page_object = paginator.page(paginator.num_pages)
+    return page_object
+
+
 # Create your views here.
 class HomeView(View):
     def get(self, request):
@@ -43,15 +55,7 @@ class TrainingListView(View):
             messages.error(request, str(e))
 
         # Pagination
-        paginator = Paginator(trainings, 5)  # we put 5 trainings per page
-        page_number = request.GET.get('page', 1)  # in case there is no page select 1
-
-        try:
-            page_object = paginator.page(page_number)
-        except PageNotAnInteger:  # handling annoying user manually changing stuff
-            page_object = paginator.page(1)
-        except EmptyPage:
-            page_object = paginator.page(paginator.num_pages)  # again, annoying user, when out of range page
+        page_object = pagination(request, trainings)
 
         return render(request, 'patataj/TrainingList.html', {
             'page_object': page_object,  # Pass paginated queryset to template
@@ -182,14 +186,15 @@ class PlanListView(LoginRequiredMixin, View):
         if name:
             plans = plans.filter(name__icontains=name)
         # see training list view for some explanation of pagination
-        paginator = Paginator(plans, 5)
-        page_number = request.GET.get('page', 1)
-        try:
-            page_object = paginator.page(page_number)
-        except PageNotAnInteger:
-            page_object = paginator.page(1)
-        except EmptyPage:
-            page_object = paginator.page(paginator.num_pages)
+        page_object = pagination(request, plans)
+        # paginator = Paginator(plans, 5)
+        # page_number = request.GET.get('page', 1)
+        # try:
+        #     page_object = paginator.page(page_number)
+        # except PageNotAnInteger:
+        #     page_object = paginator.page(1)
+        # except EmptyPage:
+        #     page_object = paginator.page(paginator.num_pages)
         return render(request, 'patataj/PlanList.html', {'page_object': page_object})
 
 
@@ -291,15 +296,8 @@ class HorseListView(LoginRequiredMixin, View):
         horses = models.Horse.objects.filter(owner=request.user)
         if name:
             horses = horses.filter(name__icontains=name)
-        # see training list view for some explanation of pagination
-        paginator = Paginator(horses, 5)
-        page_number = request.GET.get('page', 1)
-        try:
-            page_object = paginator.page(page_number)
-        except PageNotAnInteger:
-            page_object = paginator.page(1)
-        except EmptyPage:
-            page_object = paginator.page(paginator.num_pages)
+        # see pagination function for details
+        page_object = pagination(request, horses)
         return render(request, 'patataj/HorseList.html', {'page_object': page_object})
 
 
@@ -409,15 +407,7 @@ class TrainerListView(View):
             trainers = trainers.filter(training_type=training_type)
 
         # Pagination
-        # see TrainingListView for more details
-        paginator = Paginator(trainers, 5)
-        page_number = request.GET.get('page', 1)
-        try:
-            page_object = paginator.page(page_number)
-        except PageNotAnInteger:
-            page_object = paginator.page(1)
-        except EmptyPage:
-            page_object = paginator.page(paginator.num_pages)
+        page_object = pagination(request, trainers)
 
         return render(request, 'patataj/TrainerList.html', {
             'page_object': page_object,

@@ -434,10 +434,6 @@ def test_plan_edit_post_empty_data(training, user):
     assert 'Opis wymagany!' in response.content.decode()
 
 
-
-
-
-
 @pytest.mark.django_db
 def test_delete_plan_get(plan, user):
     client = Client()
