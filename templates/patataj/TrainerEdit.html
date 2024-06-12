@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+{% block content %}
+    <div class="centered">
+        <form method="POST" class="form-container-big big-add_form transparency">
+            {% csrf_token %}
+            <h1 class="big-title">Edycja Trenera {{ trainer.name }}</h1>
+            <br>
+            <div class="form-group-big">
+                <label for="name">Imię i Nazwisko:</label>
+                <input type="text" id="name" name="name" value="{{ name|default:trainer.name }}" placeholder="Imię/Nazwisko Trenera">
+                {% if errors.name %}
+                    <br>
+                    <span class="text-danger">{{ errors.name }}</span>
+                {% endif %}
+            </div>
+
+            <div class="form-group-big">
+                <label for="training_type">Typ treningu:</label>
+                <select id="training_type" name="training_type" style="height: 30px">
+                    <option value="">Wybierz typ treningu</option>
+                    {% for choice in training_type_choices %}
+                        <option value="{{ choice.0 }}" {% if choice.0 == training_type|default:trainer.training_type %}
+                                selected {% endif %}>{{ choice.1 }}</option>
+                    {% endfor %}
+                </select>
+                {% if errors.training_type %}
+                    <br>
+                    <span class="text-danger">{{ errors.training_type }}</span>
+                {% endif %}
+            </div>
+
+            <div class="form-group-big">
+                <label for="description">Opis:</label>
+                <textarea id="description" name="description" placeholder="Dodaj Opis" rows="5">{{ description|default:trainer.description }}</textarea>
+                {% if errors.description %}
+                    <br>
+                    <span class="text-danger">{{ errors.description }}</span>
+                {% endif %}
+            </div>
+
+            <div class="form-group-big centered">
+                <button type="submit" class="btn-inline">Edytuj</button>
+            </div>
+
+        </form>
+    </div>
+{% endblock %}

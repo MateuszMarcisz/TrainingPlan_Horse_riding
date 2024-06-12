@@ -21,7 +21,7 @@
         </div>
 
         <div class="form-group-inline">
-            <label for="training_type">Typ:</label>
+            <label for="training_type">Typ treningu:</label>
             <select id="training_type" name="training_type" style="height: 30px">
                 <option value="">Wybierz typ treningu</option>
                 {% for choice in training_type_choices %}
@@ -44,7 +44,7 @@
                     <h2>{{ trainer.name }}</h2>
                     <div class="training-buttons">
                         <a href="{% url 'trainer_detail' trainer.id %}" class="btn-detail">Szczegóły</a>
-                        <a href="" class="btn-edit">Edytuj</a>
+                        <a href="{% url 'trainer_edit' trainer.id %}" class="btn-edit">Edytuj</a>
                         <a href="{% url 'trainer_delete' trainer.id %}" class="btn-delete">Usuń</a>
                     </div>
                 </div>

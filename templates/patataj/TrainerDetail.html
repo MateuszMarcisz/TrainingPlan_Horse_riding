@@ -5,7 +5,7 @@
         <div class="training-header">
             <h2>{{ trainer.name }}</h2>
             <div class="training-buttons">
-                <a href="" class="btn-edit">Edytuj</a>
+                <a href="{% url 'trainer_edit' trainer.id %}" class="btn-edit">Edytuj</a>
                 <a href="{% url 'trainer_delete' trainer.id %}" class="btn-delete">Usuń</a>
             </div>
         </div>

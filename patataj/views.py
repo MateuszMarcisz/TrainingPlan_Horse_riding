@@ -185,16 +185,8 @@ class PlanListView(LoginRequiredMixin, View):
         plans = models.Plan.objects.filter(user=request.user)
         if name:
             plans = plans.filter(name__icontains=name)
-        # see training list view for some explanation of pagination
+        # see pagination function for some explanation of pagination
         page_object = pagination(request, plans)
-        # paginator = Paginator(plans, 5)
-        # page_number = request.GET.get('page', 1)
-        # try:
-        #     page_object = paginator.page(page_number)
-        # except PageNotAnInteger:
-        #     page_object = paginator.page(1)
-        # except EmptyPage:
-        #     page_object = paginator.page(paginator.num_pages)
         return render(request, 'patataj/PlanList.html', {'page_object': page_object})
 
 
@@ -471,3 +463,49 @@ class DeleteTrainerView(LoginRequiredMixin, View):
         trainer = get_object_or_404(Trainer, pk=pk)
         trainer.delete()
         return redirect('trainer_list')
+
+
+class EditTrainerView(LoginRequiredMixin, View):
+    def get(self, request, pk):
+        trainer = get_object_or_404(Trainer, pk=pk)
+        training_type_choices = TrainingType.choices
+        return render(request, 'patataj/TrainerEdit.html', {
+            'trainer': trainer,
+            'training_type_choices': training_type_choices
+        })
+
+    def post(self, request, pk):
+        name = request.POST.get('name')
+        training_type = request.POST.get('training_type')
+        description = request.POST.get('description')
+        training_type_choices = TrainingType.choices
+        trainer = get_object_or_404(Trainer, pk=pk)
+        errors = {}
+        if not name:
+            errors['name'] = 'Imię/Nazwisko trenera jest wymagane!'
+        if not training_type:
+            errors['training_type'] = 'Typ treningu jest wymagany!'
+        if not description:
+            errors['description'] = 'Opis trenera jest wymagany!'
+        if errors:
+            return render(request, 'patataj/TrainerEdit.html', {
+                'errors': errors,
+                'name': name,
+                'training_type': training_type,
+                'description': description,
+                'training_type_choices': training_type_choices,
+                'trainer': trainer
+            })
+
+        try:
+            trainer.name = name
+            trainer.training_type = training_type
+            trainer.description = description
+            trainer.save()
+            return redirect('trainer_detail', pk=trainer.pk)
+
+        except Exception as e:
+            return render(request, 'patataj/TrainerEdit.html', {
+                'errors': e,
+                'training_type_choices': training_type_choices
+            })
