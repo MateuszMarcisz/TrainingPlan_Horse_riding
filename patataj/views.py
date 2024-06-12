@@ -65,7 +65,7 @@ class TrainingListView(View):
 
 class TrainingDetailView(View):
     def get(self, request, pk):
-        training = models.Training.objects.get(pk=pk)
+        training = get_object_or_404(Training, pk=pk)
         return render(request, 'patataj/TrainingDetail.html', {'training': training})
 
 
@@ -409,7 +409,7 @@ class TrainerListView(View):
 
 class TrainerDetailView(View):
     def get(self, request, pk):
-        trainer = Trainer.objects.get(pk=pk)
+        trainer = get_object_or_404(Trainer, pk=pk)
         return render(request, 'patataj/TrainerDetail.html', {'trainer': trainer})
 
 

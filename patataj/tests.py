@@ -4,7 +4,7 @@ from django.test import TestCase, Client
 from django.urls import reverse
 
 from patataj import models
-from patataj.models import Training, Plan, Horse
+from patataj.models import Training, Plan, Horse, Trainer
 
 
 # Create your tests here.
@@ -15,6 +15,8 @@ def test_home_page():
     response = client.get(url)
     assert response.status_code == 200
 
+
+# Training Views test:
 
 @pytest.mark.django_db
 def test_training_list(trainings):
@@ -249,6 +251,8 @@ def test_training_edit_post_empty_data(training, user):
     assert response.status_code == 200
 
 
+# Plan Views tests:
+
 @pytest.mark.django_db
 def test_plan_list(plans, user):
     client = Client()
@@ -461,6 +465,8 @@ def test_delete_plan_works_properly(plan, user):
     assert response.status_code == 200
     assert not Plan.objects.filter(id=plan.id).exists()
 
+
+# Horse Views tests:
 
 @pytest.mark.django_db
 def test_horse_list(horses, user):
@@ -694,3 +700,222 @@ def test_delete_horse_works_properly(horse, user):
     response = client.post(url, follow=True)
     assert response.status_code == 200
     assert not Horse.objects.filter(id=horse.id).exists()
+
+
+# Trainer Views test:
+
+@pytest.mark.django_db
+def test_trainer_list(trainers):
+    client = Client()
+    url = reverse('trainer_list')
+    response = client.get(url)
+    assert response.status_code == 200
+    assert len(response.context['page_object'].object_list) == 5
+    paginator = response.context['page_object'].paginator
+    assert paginator.num_pages == 3
+    assert paginator.count == len(trainers)
+    response_page_2 = client.get(url, {'page': 2})
+    assert response_page_2.status_code == 200
+
+
+@pytest.mark.django_db
+def test_trainer_list_filtering_for_element(trainers):
+    client = Client()
+    url = reverse('trainer_list')
+    response = client.get(url, {'name': '8'})
+    assert response.status_code == 200
+    assert len(response.context['page_object'].object_list) == 1
+    response = client.get(url, {'name': '4'})
+    assert response.status_code == 200
+    assert len(response.context['page_object'].object_list) == 2
+    response = client.get(url, {'training_type': 'SK'})
+    assert response.status_code == 200
+    assert len(response.context['page_object'].object_list) == 5
+    paginator = response.context['page_object'].paginator
+    assert paginator.num_pages == 3
+
+
+@pytest.mark.django_db
+def test_trainer_detail(trainer):
+    client = Client()
+    url = reverse('trainer_detail', args=(trainer.id,))
+    response = client.get(url)
+    assert response.status_code == 200
+    trainer_context = response.context['trainer']
+    assert trainer_context == trainer
+    content = response.content.decode()
+    assert trainer.name in content
+    assert trainer.description in content
+    assert trainer.get_training_type_display() in content
+
+
+@pytest.mark.django_db
+def test_add_trainer_get(user):
+    client = Client()
+    client.force_login(user)
+    url = reverse('trainer_add')
+    response = client.get(url)
+    assert response.status_code == 200
+
+
+@pytest.mark.django_db
+def test_add_trainer_get_without_login():
+    client = Client()
+    url = reverse('trainer_add')
+    response = client.get(url)
+    assert response.status_code == 302
+    login_url = reverse('login')
+    assert response.url == f'{login_url}?next={url}'
+
+
+@pytest.mark.django_db
+def test_add_trainer_post(user):
+    client = Client()
+    client.force_login(user)
+    data = {
+        'name': 'Leo Beenhakker',
+        'training_type': 'CR',
+        'description': 'For money!',
+    }
+    url = reverse('trainer_add')
+    initial_count = Trainer.objects.count()
+    response = client.post(url, data)
+    assert response.status_code == 302
+    assert Trainer.objects.count() == initial_count + 1
+    assert Trainer.objects.get(name='Leo Beenhakker')
+    assert Trainer.objects.get().name == 'Leo Beenhakker'
+    assert Trainer.objects.get().description == 'For money!'
+    assert Trainer.objects.get().get_training_type_display() == 'Cross'
+    assert Trainer.objects.get().training_type == 'CR'
+
+
+@pytest.mark.django_db
+def test_add_trainer_post_missing_data(user):
+    client = Client()
+    client.force_login(user)
+    data = {
+        'name': 'Leo Beenhakker',
+    }
+    url = reverse('trainer_add')
+    response = client.post(url, data)
+    assert response.status_code == 200
+    assert Plan.objects.count() == 0
+
+
+@pytest.mark.django_db
+def test_add_trainer_post_empty_field(user):
+    client = Client()
+    client.force_login(user)
+    data = {
+        'name': 'Leo Beenhakker',
+        'training_type': 'CR',
+        'description': '',
+    }
+    url = reverse('trainer_add')
+    response = client.post(url, data)
+    assert response.status_code == 200
+    assert Plan.objects.count() == 0
+    assert 'Opis trenera jest wymagany!' in response.content.decode()
+    data2 = {
+        'name': '',
+        'training_type': 'CR',
+        'description': 'For money!',
+    }
+    response = client.post(url, data2)
+    assert 'Imię/Nazwisko trenera jest wymagane!' in response.content.decode()
+    data3 = {
+        'name': 'Leo Beenhakker',
+        'training_type': '',
+        'description': 'For money!',
+    }
+    response = client.post(url, data3)
+    assert 'Typ treningu jest wymagany!' in response.content.decode()
+
+
+@pytest.mark.django_db
+def test_trainer_edit_get(trainer, user):
+    client = Client()
+    client.force_login(user)
+    url = reverse('trainer_edit', args=(trainer.id,))
+    response = client.get(url)
+    assert response.status_code == 200
+    assert Trainer.objects.filter(id=trainer.id).exists()
+    assert Trainer.objects.get(name='name')
+
+
+@pytest.mark.django_db
+def test_trainer_edit_post(trainer, user):
+    client = Client()
+    client.force_login(user)
+    data = {
+        'name': 'Franciszek Smuda',
+        'training_type': 'TE',
+        'description': 'To się nie uda',
+    }
+    url = reverse('trainer_edit', args=(trainer.id,))
+    response = client.post(url, data)
+    assert response.status_code == 302
+    edited_trainer = Trainer.objects.get(pk=trainer.id)
+    assert edited_trainer.name == data['name']
+    assert edited_trainer.description == 'To się nie uda'
+    assert edited_trainer.training_type == 'TE'
+    assert edited_trainer.get_training_type_display() == 'Teren'
+    assert edited_trainer.training_type == data['training_type']
+
+
+@pytest.mark.django_db
+def test_trainer_edit_post_empty_data(trainer, user):
+    client = Client()
+    client.force_login(user)
+    data = {
+        'name': 'Leo Beenhakker',
+        'training_type': 'CR',
+        'description': '',
+    }
+    url = reverse('trainer_edit', args=(trainer.id,))
+    response = client.post(url, data)
+    assert response.status_code == 200
+    assert 'Opis trenera jest wymagany!' in response.content.decode()
+    data2 = {
+        'name': '',
+        'training_type': 'CR',
+        'description': 'For money!',
+    }
+    response = client.post(url, data2)
+    assert 'Imię/Nazwisko trenera jest wymagane!' in response.content.decode()
+    data3 = {
+        'name': 'Leo Beenhakker',
+        'training_type': '',
+        'description': 'For money!',
+    }
+    response = client.post(url, data3)
+    assert 'Typ treningu jest wymagany!' in response.content.decode()
+
+
+@pytest.mark.django_db
+def test_delete_trainer_get(trainer, user):
+    client = Client()
+    client.force_login(user)
+    url = reverse('trainer_delete', args=(trainer.id,))
+    response = client.get(url)
+    assert response.status_code == 200
+
+
+@pytest.mark.django_db
+def test_delete_trainer_get_no_user(trainer):
+    client = Client()
+    url = reverse('trainer_delete', args=(trainer.id,))
+    response = client.get(url)
+    assert response.status_code == 302
+    login_url = reverse('login')
+    assert response.url == f'{login_url}?next={url}'
+
+
+@pytest.mark.django_db
+def test_delete_trainer_works_properly(trainer, user):
+    client = Client()
+    client.force_login(user)
+    url = reverse('trainer_delete', args=(trainer.id,))
+    response = client.post(url, follow=True)
+    assert response.status_code == 200
+    assert not Trainer.objects.filter(id=trainer.id).exists()
