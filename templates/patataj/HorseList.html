@@ -3,9 +3,9 @@
 {% block content %}
 
     <div class="filter-and-add">
-        <a href="{% url 'training_add' %}" class="btn-add">Dodaj trening</a>
-        <a href="{% url 'plan_add' %}" class="btn-add">Dodaj Plan</a>
-        <a href="" class="btn-add">Dodaj trening do planu</a>
+        <a href="" class="btn-add">Nowy Koń</a>
+{#        <a href="{% url 'plan_add' %}" class="btn-add">Dodaj Plan</a>#}
+{#        <a href="" class="btn-add">Dodaj trening do planu</a>#}
     </div>
 
     <form method="GET" class="form-container-inline transparency">
@@ -13,28 +13,27 @@
         <div class="form-group-inline">
             <h2>Filtruj</h2>
             <label for="name">Nazwa:</label>
-            <input type="text" id="name" name="name" placeholder="Nazwa Planu">
+            <input type="text" id="name" name="name" placeholder="Nazwa Konia">
         </div>
         <div class="form-group-inline">
             <button type="submit" class="btn-inline">Filtruj</button>
         </div>
     </form>
 
-    <h1 class="big-title">Lista Planów</h1>
+    <h1 class="big-title">Lista Koni</h1>
 
     <div class="training-list transparency">
-        {% for plan in page_object %}
+        {% for horse in page_object %}
             <div class="training-list-item">
                 <div class="training-header">
-                    <h2>{{ plan.name }}</h2>
+                    <h2>{{ horse.name }}</h2>
                     <div class="training-buttons">
-                        <a href="{% url 'plan_detail' plan.id %}" class="btn-detail">Szczegóły</a>
-                        <a href="" class="btn-add-small">Dodaj trening do planu</a>
-                        <a href="{% url 'plan_edit' plan.id %}" class="btn-edit">Edytuj Plan</a>
-                        <a href="{% url 'plan_delete' plan.id %}" class="btn-delete">Usuń Plan</a>
+                        <a href="{% url 'horse_detail' horse.id %}" class="btn-detail">Szczegóły</a>
+                        <a href="" class="btn-edit">Edytuj</a>
+                        <a href="" class="btn-delete">Usuń</a>
                     </div>
                 </div>
-                <p>Opis:<br>{{ plan.description }}</p>
+                <p>Opis:<br>{{ horse.description }}</p>
             </div>
         {% endfor %}
 

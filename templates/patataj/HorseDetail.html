@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+{% block content %}
+    <div class="training-list-item transparency">
+        <h1 class="big-title">Szczegóły Konia</h1>
+        <div class="training-header">
+            <h2>{{ horse.name }}</h2>
+            <div class="training-buttons">
+                <a href="" class="btn-edit">Edytuj</a>
+                <a href="" class="btn-delete">Usuń</a>
+            </div>
+        </div>
+        <p>Opis:<br>{{ horse.description }}</p>
+    </div>
+
+{% endblock %}
