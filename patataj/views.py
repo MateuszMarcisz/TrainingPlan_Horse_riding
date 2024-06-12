@@ -359,3 +359,37 @@ class DeleteHorseView(UserPassesTestMixin, View):
         horse = get_object_or_404(Horse, pk=pk)
         horse.delete()
         return redirect('horse_list')
+
+
+class EditHorseView(UserPassesTestMixin, View):
+    def test_func(self):
+        horse = Horse.objects.get(pk=self.kwargs['pk'])
+        return self.request.user == horse.owner
+
+    def get(self, request, pk):
+        horse = get_object_or_404(Horse, pk=pk)
+        return render(request, 'patataj/HorseEdit.html', {'horse': horse})
+
+    def post(self, request, pk):
+        horse = get_object_or_404(Horse, pk=pk)
+        name = request.POST.get('name')
+        description = request.POST.get('description')
+        errors = {}
+        if not name:
+            errors['name'] = 'Imię konia jest wymagane!'
+        if not description:
+            errors['description'] = 'Opis konia jest wymagany!'
+        if errors:
+            return render(request, 'patataj/HorseEdit.html', {
+                'errors': errors,
+                'name': name,
+                'description': description,
+                'horse': horse
+            })
+        try:
+            horse.name = name
+            horse.description = description
+            horse.save()
+            return redirect('horse_detail', pk=horse.pk)
+        except Exception as e:
+            return render(request, 'patataj/HorseEdit.html', {'errors': e})

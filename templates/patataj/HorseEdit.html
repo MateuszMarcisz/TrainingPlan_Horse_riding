@@ -3,11 +3,11 @@
     <div class="centered">
         <form method="POST" class="form-container-big big-add_form transparency">
             {% csrf_token %}
-            <h1 class="big-title">Nowy Plan</h1>
+            <h1 class="big-title">Edycja Konia {{ horse.name }}</h1>
             <br>
             <div class="form-group-big">
-                <label for="name">Nazwa:</label>
-                <input type="text" id="name" name="name" value="{{ name }}" placeholder="Nazwa Planu">
+                <label for="name">Imię:</label>
+                <input type="text" id="name" name="name" value="{{ name|default:horse.name }}" placeholder="Imię Konia">
                 {% if errors.name %}
                     <br>
                     <span class="text-danger">{{ errors.name }}</span>
@@ -16,7 +16,7 @@
 
             <div class="form-group-big">
                 <label for="description">Opis:</label>
-                <textarea id="description" name="description" placeholder="Dodaj Opis" rows="5">{{ plan.description }}</textarea>
+                <textarea id="description" name="description" placeholder="Dodaj Opis" rows="5">{{ description|default:horse.description }}</textarea>
                 {% if errors.description %}
                     <br>
                     <span class="text-danger">{{ errors.description }}</span>
@@ -24,7 +24,7 @@
             </div>
 
             <div class="form-group-big centered">
-                <button type="submit" class="btn-inline">Dodaj</button>
+                <button type="submit" class="btn-inline">Edytuj</button>
             </div>
 
         </form>
