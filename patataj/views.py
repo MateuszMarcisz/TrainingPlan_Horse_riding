@@ -419,3 +419,44 @@ class TrainerDetailView(View):
     def get(self, request, pk):
         trainer = Trainer.objects.get(pk=pk)
         return render(request, 'patataj/TrainerDetail.html', {'trainer': trainer})
+
+
+class AddTrainerView(LoginRequiredMixin, View):
+    def get(self, request):
+        training_type_choices = TrainingType.choices
+        return render(request, 'patataj/AddTrainer.html', {'training_type_choices': training_type_choices})
+
+    def post(self, request):
+        name = request.POST.get('name')
+        training_type = request.POST.get('training_type')
+        description = request.POST.get('description')
+        training_type_choices = TrainingType.choices
+        errors = {}
+        if not name:
+            errors['name'] = 'Imię/Nazwisko trenera jest wymagane!'
+        if not training_type:
+            errors['training_type'] = 'Typ treningu jest wymagany!'
+        if not description:
+            errors['description'] = 'Opis trenera jest wymagany!'
+        if errors:
+            return render(request, 'patataj/AddTrainer.html', {
+                'errors': errors,
+                'name': name,
+                'training_type': training_type,
+                'description': description,
+                'training_type_choices': training_type_choices
+            })
+
+        try:
+            trainer = Trainer.objects.create(
+                name=name,
+                training_type=training_type,
+                description=description
+            )
+            return redirect('trainer_detail', pk=trainer.pk)
+
+        except Exception as e:
+            return render(request, 'patataj/AddTrainer.html', {
+                'errors': e,
+                'training_type_choices': training_type_choices
+            })

@@ -22,4 +22,5 @@ urlpatterns = [
     path('horse_edit/<int:pk>/', views.EditHorseView.as_view(), name='horse_edit'),
     path('trainer_list/', views.TrainerListView.as_view(), name='trainer_list'),
     path('trainer_detail/<int:pk>/', views.TrainerDetailView.as_view(), name='trainer_detail'),
+    path('trainer_add/', views.AddTrainerView.as_view(), name='trainer_add'),
 ]

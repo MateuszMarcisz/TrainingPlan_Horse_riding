@@ -2,7 +2,7 @@
 {% block content %}
 
     <div class="filter-and-add">
-        <a href="" class="btn-add">Nowy trener</a>
+        <a href="{% url 'trainer_add' %}" class="btn-add">Nowy trener</a>
     </div>
 
     {% if messages %}
