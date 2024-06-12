@@ -460,3 +460,14 @@ class AddTrainerView(LoginRequiredMixin, View):
                 'errors': e,
                 'training_type_choices': training_type_choices
             })
+
+
+class DeleteTrainerView(LoginRequiredMixin, View):
+    def get(self, request, pk):
+        trainer = get_object_or_404(Trainer, pk=pk)
+        return render(request, 'patataj/DeleteTrainerConfirmation.html', {'trainer': trainer})
+
+    def post(self, request, pk):
+        trainer = get_object_or_404(Trainer, pk=pk)
+        trainer.delete()
+        return redirect('trainer_list')

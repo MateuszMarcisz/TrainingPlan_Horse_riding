@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+{% block content %}
+    <div class="centered">
+        <form method="POST" class="form-container-big transparency">
+            <h1 class="big-title">Usunięcie Trenera</h1>
+            <p>Czy jesteś pewien/pewna, że chcesz usunąć trenera:</p>
+            <h2 class="centered">{{ trainer.name }}</h2>
+            {% csrf_token %}
+            <div class="button-container">
+                <button type="submit" class="btn-inline btn-confirm">Potwierdzam</button>
+                <a href="{% url 'trainer_list' %}" class="btn-inline-cancel">Powrót do listy trenerów</a>
+            </div>
+        </form>
+    </div>
+{% endblock %}
