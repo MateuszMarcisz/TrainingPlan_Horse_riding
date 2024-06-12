@@ -311,3 +311,36 @@ class HorseDetailView(UserPassesTestMixin, View):
     def get(self, request, pk):
         horse = get_object_or_404(Horse, pk=pk)
         return render(request, 'patataj/HorseDetail.html', {'horse': horse})
+
+
+class AddHorseView(LoginRequiredMixin, View):
+    def get(self, request):
+        return render(request, 'patataj/AddHorse.html')
+
+    def post(self, request):
+        name = request.POST.get('name')
+        description = request.POST.get('description')
+        errors = {}
+        if not name:
+            errors['name'] = 'Imię konia jest wymagane!'
+        if not description:
+            errors['description'] = 'Opis konia jest wymagany!'
+        if errors:
+            return render(request, 'patataj/AddHorse.html', {
+                'errors': errors,
+                'name': name,
+                'description': description,
+            })
+
+        try:
+            plan = models.Horse.objects.create(
+                name=name,
+                description=description,
+                owner_id=request.user.id,
+            )
+            return redirect('horse_detail', pk=plan.pk)
+
+        except Exception as e:
+            return render(request, 'patataj/AddHorse.html', {
+                'errors': e,
+            })

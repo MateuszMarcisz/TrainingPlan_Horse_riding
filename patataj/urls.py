@@ -17,4 +17,5 @@ urlpatterns = [
     path('plan_edit/<int:pk>/', views.EditPlanView.as_view(), name='plan_edit'),
     path('horse_list/', views.HorseListView.as_view(), name='horse_list'),
     path('horse_detail/<int:pk>/', views.HorseDetailView.as_view(), name='horse_detail'),
+    path('horse_add/', views.AddHorseView.as_view(), name='horse_add'),
 ]
