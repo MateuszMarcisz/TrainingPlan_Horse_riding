@@ -1,7 +1,7 @@
 import pytest
 from django.contrib.auth.models import User
 
-from patataj.models import Training, Plan
+from patataj.models import Training, Plan, Horse
 
 
 @pytest.fixture
@@ -37,3 +37,16 @@ def plans(user):
 @pytest.fixture
 def plan(user):
     return Plan.objects.create(name="name", description="description", user_id=user.id)
+
+
+@pytest.fixture
+def horses(user):
+    lst = []
+    for i in range(15):
+        lst.append(Horse.objects.create(name=i, description="description", owner_id=user.id))
+    return lst
+
+
+@pytest.fixture
+def horse(user):
+    return Horse.objects.create(name="name", description="description", owner_id=user.id)

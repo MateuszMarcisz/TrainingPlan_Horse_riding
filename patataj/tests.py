@@ -4,7 +4,7 @@ from django.test import TestCase, Client
 from django.urls import reverse
 
 from patataj import models
-from patataj.models import Training, Plan
+from patataj.models import Training, Plan, Horse
 
 
 # Create your tests here.
@@ -274,7 +274,6 @@ def test_plan_list_no_login(plans):
     assert response.url == f'{login_url}?next={url}'
 
 
-
 @pytest.mark.django_db
 def test_plan_list_filtering_for_element(plans, user):
     client = Client()
@@ -461,3 +460,237 @@ def test_delete_plan_works_properly(plan, user):
     response = client.post(url, follow=True)
     assert response.status_code == 200
     assert not Plan.objects.filter(id=plan.id).exists()
+
+
+@pytest.mark.django_db
+def test_horse_list(horses, user):
+    client = Client()
+    client.force_login(user)
+    url = reverse('horse_list')
+    response = client.get(url)
+    assert response.status_code == 200
+    assert len(response.context['page_object'].object_list) == 5
+    paginator = response.context['page_object'].paginator
+    assert paginator.num_pages == 3
+    assert paginator.count == len(horses)
+    response_page_2 = client.get(url, {'page': 2})
+    assert response_page_2.status_code == 200
+
+
+@pytest.mark.django_db
+def test_horse_list_no_login(horses):
+    client = Client()
+    url = reverse('horse_list')
+    response = client.get(url)
+    assert response.status_code == 302
+    login_url = reverse('login')
+    assert response.url == f'{login_url}?next={url}'
+
+
+@pytest.mark.django_db
+def test_horse_list_filtering_for_element(horses, user):
+    client = Client()
+    client.force_login(user)
+    url = reverse('horse_list')
+    response = client.get(url, {'name': '9'})
+    assert response.status_code == 200
+    assert len(response.context['page_object'].object_list) == 1
+    response = client.get(url, {'name': '3'})
+    assert response.status_code == 200
+    assert len(response.context['page_object'].object_list) == 2
+
+
+@pytest.mark.django_db
+def test_horse_detail(horse, user):
+    client = Client()
+    client.force_login(user)
+    url = reverse('horse_detail', args=(horse.id,))
+    response = client.get(url)
+    assert response.status_code == 200
+    horse_context = response.context['horse']
+    assert horse_context == horse
+    content = response.content.decode()
+    assert horse.name in content
+    assert horse.description in content
+
+
+@pytest.mark.django_db
+def test_horse_detail_not_logged(horse):
+    client = Client()
+    url = reverse('horse_detail', args=(horse.id,))
+    response = client.get(url)
+    assert response.status_code == 302
+    login_url = reverse('login')
+    assert response.url == f'{login_url}?next={url}'
+
+
+@pytest.mark.django_db
+def test_horse_detail_wrong_user(horse):
+    client = Client()
+    user2 = User.objects.create_user(username='testuser', password='password', id=2)
+    client.force_login(user2)
+    url = reverse('horse_detail', args=(horse.id,))
+    response = client.get(url)
+    assert response.status_code == 403
+
+
+@pytest.mark.django_db
+def test_add_horse_get(user):
+    client = Client()
+    client.force_login(user)
+    url = reverse('horse_add')
+    response = client.get(url)
+    assert response.status_code == 200
+
+
+@pytest.mark.django_db
+def test_add_horse_get_without_login():
+    client = Client()
+    url = reverse('horse_add')
+    response = client.get(url)
+    assert response.status_code == 302
+    login_url = reverse('login')
+    assert response.url == f'{login_url}?next={url}'
+
+
+@pytest.mark.django_db
+def test_add_horse_post(user):
+    client = Client()
+    client.force_login(user)
+    data = {
+        'name': 'To jest osioł a nie koń',
+        'description': 'to czemu zapisano go jako koń?',
+        'owner_id': user.id,
+    }
+    url = reverse('horse_add')
+    initial_count = Horse.objects.count()
+    response = client.post(url, data)
+    assert response.status_code == 302
+    assert Horse.objects.count() == initial_count + 1
+    assert Horse.objects.get(name='To jest osioł a nie koń')
+    assert Horse.objects.get().name == 'To jest osioł a nie koń'
+    assert Horse.objects.get().description == 'to czemu zapisano go jako koń?'
+    assert Horse.objects.get().owner_id == user.id
+
+
+@pytest.mark.django_db
+def test_add_horse_post_missing_data(user):
+    client = Client()
+    client.force_login(user)
+    data = {
+        'name': 'To jest osioł a nie koń',
+    }
+    url = reverse('horse_add')
+    response = client.post(url, data)
+    assert response.status_code == 200
+    assert Plan.objects.count() == 0
+
+
+@pytest.mark.django_db
+def test_add_horse_post_empty_field(user):
+    client = Client()
+    client.force_login(user)
+    data = {
+        'name': 'Weekend w Bieszczadach',
+        'description': '',
+        'owner_id': user.id
+    }
+    url = reverse('horse_add')
+    response = client.post(url, data)
+    assert response.status_code == 200
+    assert Plan.objects.count() == 0
+    assert 'Opis konia jest wymagany!' in response.content.decode()
+    data2 = {
+        'name': '',
+        'description': 'Jakiś opis',
+        'owner_id': user.id
+    }
+    url = reverse('horse_add')
+    response = client.post(url, data2)
+    assert 'Imię konia jest wymagane!' in response.content.decode()
+
+
+@pytest.mark.django_db
+def test_hrose_edit_get(horse, user):
+    client = Client()
+    client.force_login(user)
+    url = reverse('horse_edit', args=(horse.id,))
+    response = client.get(url)
+    assert response.status_code == 200
+    assert Horse.objects.filter(id=horse.id).exists()
+    assert Horse.objects.get(name='name')
+
+
+@pytest.mark.django_db
+def test_horse_edit_get_wrong_user(horse):
+    client = Client()
+    user2 = User.objects.create_user(username='testuser', password='password', id=2)
+    client.force_login(user2)
+    url = reverse('horse_edit', args=(horse.id,))
+    response = client.get(url)
+    assert response.status_code == 403
+
+
+@pytest.mark.django_db
+def test_horse_edit_post(horse, user):
+    client = Client()
+    client.force_login(user)
+    data = {
+        'name': 'To jest nowa nazwa osła a nie konia, bo to osioł a nie koń',
+        'description': 'to czemu zapisano go jako koń? Bo mogłem.',
+    }
+    url = reverse('horse_edit', args=(horse.id,))
+    response = client.post(url, data)
+    assert response.status_code == 302
+    edited_horse = Horse.objects.get(pk=horse.id)
+    assert edited_horse.name == 'To jest nowa nazwa osła a nie konia, bo to osioł a nie koń'
+    assert edited_horse.description == data['description']
+
+
+@pytest.mark.django_db
+def test_horse_edit_post_empty_data(horse, user):
+    client = Client()
+    client.force_login(user)
+    data = {
+        'name': 'Zapomniałem dodać opisu',
+        'description': '',
+    }
+    url = reverse('horse_edit', args=(horse.id,))
+    response = client.post(url, data)
+    assert response.status_code == 200
+    assert 'Opis konia jest wymagany!' in response.content.decode()
+    data2 = {
+        'name': '',
+        'description': 'A teraz zapomniałem dodać nazwy konia',
+    }
+    response = client.post(url, data2)
+    assert 'Imię konia jest wymagane!' in response.content.decode()
+
+
+@pytest.mark.django_db
+def test_delete_horse_get(horse, user):
+    client = Client()
+    client.force_login(user)
+    url = reverse('horse_delete', args=(horse.id,))
+    response = client.get(url)
+    assert response.status_code == 200
+
+
+@pytest.mark.django_db
+def test_delete_horse_get_no_user(horse):
+    client = Client()
+    url = reverse('horse_delete', args=(horse.id,))
+    response = client.get(url)
+    assert response.status_code == 302
+    login_url = reverse('login')
+    assert response.url == f'{login_url}?next={url}'
+
+
+@pytest.mark.django_db
+def test_delete_horse_works_properly(horse, user):
+    client = Client()
+    client.force_login(user)
+    url = reverse('horse_delete', args=(horse.id,))
+    response = client.post(url, follow=True)
+    assert response.status_code == 200
+    assert not Horse.objects.filter(id=horse.id).exists()
