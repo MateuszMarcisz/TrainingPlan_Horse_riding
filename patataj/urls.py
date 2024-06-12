@@ -18,4 +18,5 @@ urlpatterns = [
     path('horse_list/', views.HorseListView.as_view(), name='horse_list'),
     path('horse_detail/<int:pk>/', views.HorseDetailView.as_view(), name='horse_detail'),
     path('horse_add/', views.AddHorseView.as_view(), name='horse_add'),
+    path('horse_delete/<int:pk>/', views.DeleteHorseView.as_view(), name='horse_delete'),
 ]

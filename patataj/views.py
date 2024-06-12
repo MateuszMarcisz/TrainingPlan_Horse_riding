@@ -344,3 +344,18 @@ class AddHorseView(LoginRequiredMixin, View):
             return render(request, 'patataj/AddHorse.html', {
                 'errors': e,
             })
+
+
+class DeleteHorseView(UserPassesTestMixin, View):
+    def test_func(self):
+        horse = models.Horse.objects.get(pk=self.kwargs['pk'])
+        return self.request.user == horse.owner
+
+    def get(self, request, pk):
+        horse = get_object_or_404(Horse, pk=pk)
+        return render(request, 'patataj/DeleteHorseConfirmation.html', {'horse': horse})
+
+    def post(self, request, pk):
+        horse = get_object_or_404(Horse, pk=pk)
+        horse.delete()
+        return redirect('horse_list')
