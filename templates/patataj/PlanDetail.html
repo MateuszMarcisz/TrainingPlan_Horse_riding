@@ -57,13 +57,14 @@
                         <a href="{% url 'delete_training_from_plan' training.id %}" class="btn-delete">Usuń trening z planu</a>
                     </div>
                 </div>
-                <p>Nazwa treningu: {{ training.training.name }}</p>
-                {{ training.training.get_type_display }}
-                z {{ training.trainer.name }},
-                Koń: {{ training.horse.name }},
-                godzina: {{ training.time|time:"H:i" }},
-                czas trwania: {{ training.training.length }} min.
-                <p></p>
+                <strong>Nazwa treningu:</strong> {{ training.training.name }}<br>
+                <strong>Typ treningu:</strong> {{ training.training.get_type_display }} <br>
+                <strong>Trener:</strong> {{ training.trainer.name }} <br>
+                <strong>Koń:</strong> {{ training.horse.name }}<br>
+                <strong>Godzina:</strong> {{ training.time|time:"H:i" }}<br>
+                <strong>Czas trwania:</strong> {{ training.training.length }} min.
+                <p><br></p>
+
             {% endfor %}
         </div>
     {% endfor %}

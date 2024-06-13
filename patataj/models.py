@@ -22,7 +22,7 @@ class Training(models.Model):
     length = models.IntegerField()
 
     def __str__(self):
-        return f"{self.name} typu {self.type} o długości {self.length} min"
+        return f"{self.name} typu {self.get_type_display()} o długości {self.length} min"
 
 
 class Plan(models.Model):
@@ -63,7 +63,7 @@ class Trainer(models.Model):
     description = models.TextField()
 
     def __str__(self):
-        return f"{self.name} trening: {self.training_type}"
+        return f"{self.name} trening: {self.get_training_type_display()}"
 
 
 class TrainingPlan(models.Model):
