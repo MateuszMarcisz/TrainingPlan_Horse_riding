@@ -6,6 +6,7 @@ from django.views.generic import TemplateView
 from django.contrib import messages
 
 from patataj import models
+from patataj.forms import TrainingPlanForm
 from patataj.models import Training, TrainingType, Plan, Horse, Trainer, TrainingPlan, TrainingPlanDay
 
 
@@ -553,76 +554,111 @@ class TrainingToPlanAdd(UserPassesTestMixin, View):
 
     def get(self, request, pk):
         plan = get_object_or_404(Plan, pk=pk)
-        trainings = Training.objects.all()
-        trainers = Trainer.objects.all()
-        horses = Horse.objects.filter(owner=self.request.user)
-        days = TrainingPlanDay.choices
-
+        form = TrainingPlanForm(user=request.user)
         return render(request, 'patataj/AddTrainingToPlan.html', {
             'plan': plan,
-            'trainings': trainings,
-            'trainers': trainers,
-            'horses': horses,
-            'days': days
+            'form': form
         })
 
     def post(self, request, pk):
         plan = get_object_or_404(Plan, pk=pk)
-        name = request.POST.get('name')
-        training_id = request.POST.get('training')
-        # training = get_object_or_404(Training, pk=training_id)
-        day = request.POST.get('day')
-        time = request.POST.get('time')
-        horse_id = request.POST.get('horse')
-        # horse = get_object_or_404(Horse, pk=horse_id)
-        trainer_id = request.POST.get('trainer')
-        # trainer = get_object_or_404(Trainer, pk=trainer_id)
-        trainings = Training.objects.all()
-        trainers = Trainer.objects.all()
-        horses = Horse.objects.filter(owner=self.request.user)
-        days = TrainingPlanDay.choices
-
-        errors = {}
-        if not name:
-            errors['name'] = "Nazwa jest wymagana!"
-        if not training_id:
-            errors['training'] = 'Musisz wybrać trening!'
-        if not day:
-            errors['day'] = 'Musisz wybrać dzień!'
-        if not horse_id:
-            errors['horse'] = 'Musisz wybrać konia!'
-        if not trainer_id:
-            errors['trainer'] = 'Musisz wybrać trenera!'
-        if not time:
-            errors['time'] = "Musisz podać czas!"
-        if errors:
-            return render(request, 'patataj/AddTrainingToPlan.html', {
-                'errors': errors,
-                'name': name,
-                'training': training_id,
-                'plan': plan,
-                'day': day,
-                'horse': horse_id,
-                'trainer': trainer_id,
-                'trainings': trainings,
-                'trainers': trainers,
-                'days': days,
-                'horses': horses,
-            })
-
-        try:
-            training_plan = TrainingPlan.objects.create(
-                name=name,
-                training_id=training_id,
-                plan=plan,
-                day=day,
-                time=time,
-                horse_id=horse_id,
-                trainer_id=trainer_id
-            )
+        form = TrainingPlanForm(request.POST, user=request.user)
+        if form.is_valid():
+            training_plan = form.save(commit=False)
+            training_plan.plan = plan
+            training_plan.save()
             return redirect('plan_detail', pk=plan.pk)
-        except Exception as e:
-            return render(request, 'patataj/AddTrainingToPlan.html', {'errors': e})
+        return render(request, 'patataj/AddTrainingToPlan.html', {
+            'plan': plan,
+            'form': form
+        })
+
+
+# class TrainingToPlanAdd(UserPassesTestMixin, View):
+#     def test_func(self):
+#         plan = Plan.objects.get(pk=self.kwargs['pk'])
+#         return self.request.user == plan.user
+#
+#     def get(self, request, pk):
+#         plan = get_object_or_404(Plan, pk=pk)
+#         trainings = Training.objects.all()
+#         trainers = Trainer.objects.all()
+#         horses = Horse.objects.filter(owner=self.request.user)
+#         days = TrainingPlanDay.choices
+#         form = TrainingPlanForm()
+#
+#         return render(request, 'patataj/AddTrainingToPlan.html', {
+#             'plan': plan,
+#             'trainings': trainings,
+#             'trainers': trainers,
+#             'horses': horses,
+#             'days': days,
+#             'form':form
+#         })
+#
+#     def post(self, request, pk):
+#         plan = get_object_or_404(Plan, pk=pk)
+#         # name = request.POST.get('name')
+#         # training_id = request.POST.get('training')
+#         # day = request.POST.get('day')
+#         # time = request.POST.get('time')
+#         # horse_id = request.POST.get('horse')
+#         # trainer_id = request.POST.get('trainer')
+#         form = TrainingPlanForm(request.POST)
+#         if form.is_valid():
+#             tp = form.save(commit = False)
+#             tp.plan = plan
+#             tp.save()
+#             return redirect('trainer_detail', pk=tp.pk)
+#         return render(request, 'patataj/AddTrainingToPlan.html', {'form':form})
+        # trainings = Training.objects.all()
+        # trainers = Trainer.objects.all()
+        # horses = Horse.objects.filter(owner=self.request.user)
+        # days = TrainingPlanDay.choices
+
+        # errors = {}
+        # if not name:
+        #     errors['name'] = "Nazwa jest wymagana!"
+        # if not training_id:
+        #     errors['training'] = 'Musisz wybrać trening!'
+        # if not day:
+        #     errors['day'] = 'Musisz wybrać dzień!'
+        # if not horse_id:
+        #     errors['horse'] = 'Musisz wybrać konia!'
+        # if not trainer_id:
+        #     errors['trainer'] = 'Musisz wybrać trenera!'
+        # if not time:
+        #     errors['time'] = "Musisz podać czas!"
+        #
+        # if errors:
+        #     return render(request, 'patataj/AddTrainingToPlan.html', {
+        #         'errors': errors,
+        #         'name': name,
+        #         'training_id': training_id,
+        #         'plan': plan,
+        #         'day': day,
+        #         'time': time,
+        #         'horse_id': horse_id,
+        #         'trainer_id': trainer_id,
+        #         'trainings': trainings,
+        #         'trainers': trainers,
+        #         'days': days,
+        #         'horses': horses,
+        #     })
+
+        # try:
+        #     training_plan = TrainingPlan.objects.create(
+        #         name=name,
+        #         training_id=training_id,
+        #         plan=plan,
+        #         day=day,
+        #         time=time,
+        #         horse_id=horse_id,
+        #         trainer_id=trainer_id
+        #     )
+        #     return redirect('plan_detail', pk=plan.pk)
+        # except Exception as e:
+        #     return render(request, 'patataj/AddTrainingToPlan.html', {'errors': e})
 
 
 
