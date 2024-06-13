@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% block content %}
+    <div class="centered">
+        <form method="POST" class="form-container-big transparency">
+            <h1 class="big-title">Usunięcie treningu z planu</h1>
+            <p class="centered">Czy jesteś pewien/pewna, że chcesz usunąć trening</p>
+            <h2 class="centered">{{ training_plan.name }}</h2>
+            <p class="centered">z planu</p>
+            <h2 class="centered">{{ training_plan.plan.name }}</h2>
+            {% csrf_token %}
+            <div class="button-container">
+                <button type="submit" class="btn-inline btn-confirm">Potwierdzam</button>
+                <a href="{% url 'plan_detail' training_plan.plan.id %}" class="btn-inline-cancel">Powrót do planu</a>
+            </div>
+        </form>
+    </div>
+{% endblock %}

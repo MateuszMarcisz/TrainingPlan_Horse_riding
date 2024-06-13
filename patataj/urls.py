@@ -26,4 +26,6 @@ urlpatterns = [
     path('trainer_delete/<int:pk>/', views.DeleteTrainerView.as_view(), name='trainer_delete'),
     path('trainer_edit/<int:pk>/', views.EditTrainerView.as_view(), name='trainer_edit'),
     path('add_training_to_plan/<int:pk>/', views.TrainingToPlanAdd.as_view(), name='add_training_to_plan'),
+    path('add_training_to_any_plan/', views.TrainingToAnyPlanAdd.as_view(), name='add_training_to_any_plan'),
+    path('delete_training_from_plan/<int:pk>/', views.DeleteTrainingFromPlanView.as_view(), name='delete_training_from_plan'),
 ]

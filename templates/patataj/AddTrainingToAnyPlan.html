@@ -1,0 +1,79 @@
+{% extends 'base.html' %}
+{% block content %}
+    <div class="centered">
+        <form method="POST" class="form-container-big big-add_form transparency">
+            {% csrf_token %}
+            <h1 class="big-title">Nowy Trening do Planu: {{ plan.name }}</h1>
+            <br>
+            {{ form.non_field_errors }}
+            
+            <div class="form-group-big">
+                <label for="id_name">Nazwa:</label>
+                {{ form.name }}
+                {% if form.name.errors %}
+                    <br>
+                    <span class="text-danger">{{ form.name.errors }}</span>
+                {% endif %}
+            </div>
+
+            <div class="form-group-big">
+                <label for="id_plan">Plan:</label>
+                {{ form.plan }}
+                {% if form.plan.errors %}
+                    <br>
+                    <span class="text-danger">{{ form.plan.errors }}</span>
+                {% endif %}
+            </div>
+        
+        
+            <div class="form-group-big">
+                <label for="id_training">Trening:</label>
+                {{ form.training }}
+                {% if form.training.errors %}
+                    <br>
+                    <span class="text-danger">{{ form.training.errors }}</span>
+                {% endif %}
+            </div>
+
+            <div class="form-group-big">
+                <label for="id_day">Dzień:</label>
+                {{ form.day }}
+                {% if form.day.errors %}
+                    <br>
+                    <span class="text-danger">{{ form.day.errors }}</span>
+                {% endif %}
+            </div>
+
+            <div class="form-group-big">
+                <label for="id_time">Godzina:</label>
+                {{ form.time }}
+                {% if form.time.errors %}
+                    <br>
+                    <span class="text-danger">{{ form.time.errors }}</span>
+                {% endif %}
+            </div>
+
+            <div class="form-group-big">
+                <label for="id_horse">Koń:</label>
+                {{ form.horse }}
+                {% if form.horse.errors %}
+                    <br>
+                    <span class="text-danger">{{ form.horse.errors }}</span>
+                {% endif %}
+            </div>
+
+            <div class="form-group-big">
+                <label for="id_trainer">Trener:</label>
+                {{ form.trainer }}
+                {% if form.trainer.errors %}
+                    <br>
+                    <span class="text-danger">{{ form.trainer.errors }}</span>
+                {% endif %}
+            </div>
+
+            <div class="form-group-big centered">
+                <button type="submit" class="btn-inline">Dodaj</button>
+            </div>
+        </form>
+    </div>
+{% endblock %}

@@ -54,7 +54,7 @@
                     <div class="training-buttons">
                         <a href="{% url 'training_detail' training.training.id %}" class="btn-detail">Szczegóły
                             treningu</a>
-                        <a href="" class="btn-delete">Usuń trening z planu</a>
+                        <a href="{% url 'delete_training_from_plan' training.id %}" class="btn-delete">Usuń trening z planu</a>
                     </div>
                 </div>
                 <p>Nazwa treningu: {{ training.training.name }}</p>

@@ -1,12 +1,13 @@
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
+from django.http import HttpResponseForbidden
 from django.shortcuts import render, redirect, get_object_or_404
 from django.views import View
 from django.views.generic import TemplateView
 from django.contrib import messages
 
 from patataj import models
-from patataj.forms import TrainingPlanForm
+from patataj.forms import TrainingPlanForm, TrainingToAnyPlanForm
 from patataj.models import Training, TrainingType, Plan, Horse, Trainer, TrainingPlan, TrainingPlanDay
 
 
@@ -574,111 +575,45 @@ class TrainingToPlanAdd(UserPassesTestMixin, View):
         })
 
 
-# class TrainingToPlanAdd(UserPassesTestMixin, View):
-#     def test_func(self):
-#         plan = Plan.objects.get(pk=self.kwargs['pk'])
-#         return self.request.user == plan.user
-#
-#     def get(self, request, pk):
-#         plan = get_object_or_404(Plan, pk=pk)
-#         trainings = Training.objects.all()
-#         trainers = Trainer.objects.all()
-#         horses = Horse.objects.filter(owner=self.request.user)
-#         days = TrainingPlanDay.choices
-#         form = TrainingPlanForm()
-#
-#         return render(request, 'patataj/AddTrainingToPlan.html', {
-#             'plan': plan,
-#             'trainings': trainings,
-#             'trainers': trainers,
-#             'horses': horses,
-#             'days': days,
-#             'form':form
-#         })
-#
-#     def post(self, request, pk):
-#         plan = get_object_or_404(Plan, pk=pk)
-#         # name = request.POST.get('name')
-#         # training_id = request.POST.get('training')
-#         # day = request.POST.get('day')
-#         # time = request.POST.get('time')
-#         # horse_id = request.POST.get('horse')
-#         # trainer_id = request.POST.get('trainer')
-#         form = TrainingPlanForm(request.POST)
-#         if form.is_valid():
-#             tp = form.save(commit = False)
-#             tp.plan = plan
-#             tp.save()
-#             return redirect('trainer_detail', pk=tp.pk)
-#         return render(request, 'patataj/AddTrainingToPlan.html', {'form':form})
-        # trainings = Training.objects.all()
-        # trainers = Trainer.objects.all()
-        # horses = Horse.objects.filter(owner=self.request.user)
-        # days = TrainingPlanDay.choices
+class TrainingToAnyPlanAdd(UserPassesTestMixin, View):
+    def test_func(self):
+        return self.request.user.is_authenticated
 
-        # errors = {}
-        # if not name:
-        #     errors['name'] = "Nazwa jest wymagana!"
-        # if not training_id:
-        #     errors['training'] = 'Musisz wybrać trening!'
-        # if not day:
-        #     errors['day'] = 'Musisz wybrać dzień!'
-        # if not horse_id:
-        #     errors['horse'] = 'Musisz wybrać konia!'
-        # if not trainer_id:
-        #     errors['trainer'] = 'Musisz wybrać trenera!'
-        # if not time:
-        #     errors['time'] = "Musisz podać czas!"
-        #
-        # if errors:
-        #     return render(request, 'patataj/AddTrainingToPlan.html', {
-        #         'errors': errors,
-        #         'name': name,
-        #         'training_id': training_id,
-        #         'plan': plan,
-        #         'day': day,
-        #         'time': time,
-        #         'horse_id': horse_id,
-        #         'trainer_id': trainer_id,
-        #         'trainings': trainings,
-        #         'trainers': trainers,
-        #         'days': days,
-        #         'horses': horses,
-        #     })
+    def get(self, request):
+        form = TrainingToAnyPlanForm(user=request.user)
+        return render(request, 'patataj/AddTrainingToAnyPlan.html', {'form': form})
 
-        # try:
-        #     training_plan = TrainingPlan.objects.create(
-        #         name=name,
-        #         training_id=training_id,
-        #         plan=plan,
-        #         day=day,
-        #         time=time,
-        #         horse_id=horse_id,
-        #         trainer_id=trainer_id
-        #     )
-        #     return redirect('plan_detail', pk=plan.pk)
-        # except Exception as e:
-        #     return render(request, 'patataj/AddTrainingToPlan.html', {'errors': e})
+    def post(self, request):
+        form = TrainingToAnyPlanForm(request.POST, user=request.user)
+        if form.is_valid():
+            # We do not commit yet, we do it this wierd way to so we can redirect user to the plan detail
+            training_plan = form.save(commit=False)
+
+            # Fetch the selected plan from the form data
+            plan_id = request.POST.get('plan')
+            plan = Plan.objects.get(pk=plan_id)
+
+            # Assign the plan to the training plan instance
+            training_plan.plan = plan
+            training_plan.save()
+
+            # Redirect to the plan_detail
+            return redirect('plan_detail', pk=plan.pk)
+
+        return render(request, 'patataj/AddTrainingToAnyPlan.html', {'form': form})
 
 
+class DeleteTrainingFromPlanView(LoginRequiredMixin, View):
+    def get(self, request, pk):
+        training_plan = get_object_or_404(TrainingPlan, pk=pk)
+        if training_plan.plan.user != request.user:
+            HttpResponseForbidden()
+        return render(request, 'patataj/DeleteTrainingFromPlanConfirmation.html', {'training_plan': training_plan})
 
+    def post(self, request, pk):
+        training_plan = get_object_or_404(TrainingPlan, pk=pk)
+        if training_plan.plan.user != request.user:
+            HttpResponseForbidden()
+        training_plan.delete()
+        return redirect('plan_detail', pk=training_plan.plan.pk)
 
-# class TrainingToAnyPlanAdd(UserPassesTestMixin, View):
-#     def test_func(self):
-#         plan = Plan.objects.get(pk=self.kwargs['pk'])
-#         return self.request.user == plan.user
-#
-#     def get(self, request):
-#         plans = Plan.objects.filter(user=self.request.user)
-#         trainings = Training.objects.all()
-#         trainers = Trainer.objects.all()
-#         horses = Horse.objects.filter(owner=self.request.user)
-#         days = TrainingPlanDay.choices
-#
-#         return render(request, 'patataj/AddTrainingToAnyPlan.html', {
-#             'plans': plans,
-#             'trainings': trainings,
-#             'trainers': trainers,
-#             'horses': horses,
-#             'days': days
-#         })

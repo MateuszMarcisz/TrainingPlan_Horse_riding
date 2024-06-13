@@ -13,9 +13,10 @@
             <header class="topnav">
                 <div>
                     <a href="/" class="logo"><strong>Patataj</strong></a><a href="{% url 'training_list' %}">Treningi</a>
+                    {% if user.is_authenticated %}
                     <a href="{% url 'plan_list' %}">Plany</a>
-                    <a href="">Plany treningowe</a>
                     <a href="{% url 'horse_list' %}">Moje Konie</a>
+                    {% endif %}
                     <a href="{% url 'trainer_list' %}">Trenerzy</a>
 {#                    <a href="{% url 'test' %}">Testy</a>#}
                 </div>
