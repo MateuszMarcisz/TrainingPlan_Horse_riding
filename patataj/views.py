@@ -6,7 +6,7 @@ from django.views.generic import TemplateView
 from django.contrib import messages
 
 from patataj import models
-from patataj.models import Training, TrainingType, Plan, Horse, Trainer
+from patataj.models import Training, TrainingType, Plan, Horse, Trainer, TrainingPlan, TrainingPlanDay
 
 
 def pagination(request, queryset, items_per_page=5):
@@ -190,6 +190,27 @@ class PlanListView(LoginRequiredMixin, View):
         return render(request, 'patataj/PlanList.html', {'page_object': page_object})
 
 
+# class PlanDetailView(UserPassesTestMixin, View):
+#     def test_func(self):
+#         plan = models.Plan.objects.get(pk=self.kwargs['pk'])
+#         return self.request.user == plan.user
+#
+#     def get(self, request, pk):
+#         plan = get_object_or_404(Plan, pk=pk)
+#         days_plan = TrainingPlan.objects.filter(plan=plan).values_list('day', flat=True).distinct()
+#         trainings_by_day = []
+#
+#         for day in TrainingPlanDay:
+#             if day.value in days_plan:
+#                 day_name = day.label
+#                 trainings = TrainingPlan.objects.filter(plan=plan, day=day.value)
+#                 trainings_by_day.append((day_name, trainings))
+#
+#         return render(request, 'patataj/PlanDetail.html', {
+#             'plan': plan,
+#             'trainings_by_day': trainings_by_day
+#         })
+
 class PlanDetailView(UserPassesTestMixin, View):
     def test_func(self):
         plan = models.Plan.objects.get(pk=self.kwargs['pk'])
@@ -197,7 +218,24 @@ class PlanDetailView(UserPassesTestMixin, View):
 
     def get(self, request, pk):
         plan = get_object_or_404(Plan, pk=pk)
-        return render(request, 'patataj/PlanDetail.html', {'plan': plan})
+        days_plan = TrainingPlan.objects.filter(plan=plan).order_by('day', 'time')
+
+        # Grupowanie treningów według dni tygodnia
+        trainings_by_day = {day.label: [] for day in TrainingPlanDay}
+        for training_plan in days_plan:
+            day = training_plan.get_day_display()
+            trainings_by_day[day].append(training_plan)
+
+        # Usuwanie pustych dni z wyświetlania
+        trainings_by_day = {day: trainings for day, trainings in trainings_by_day.items() if trainings}
+
+        return render(request, 'patataj/PlanDetail.html', {
+            'plan': plan,
+            'trainings_by_day': trainings_by_day,
+        })
+
+
+
 
 
 class AddPlanView(LoginRequiredMixin, View):
@@ -509,3 +547,12 @@ class EditTrainerView(LoginRequiredMixin, View):
                 'errors': e,
                 'training_type_choices': training_type_choices
             })
+
+
+class TrainingToPlanAdd(UserPassesTestMixin, View):
+    def test_func(self):
+        plan = Plan.objects.get(pk=self.kwargs['pk'])
+        return self.request.user == plan.user
+
+    def get(self, request, pk):
+        plan = get_object_or_404(Plan, pk=pk)

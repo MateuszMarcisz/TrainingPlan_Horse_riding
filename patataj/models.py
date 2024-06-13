@@ -80,4 +80,4 @@ class TrainingPlan(models.Model):
     trainer = models.ForeignKey(Trainer, on_delete=models.CASCADE)
 
     def __str__(self):
-        return f"{self.name} - {self.plan.name} - {self.training.name} w {self.get_day_display()} o {self.time}"
+        return f"{self.name} - {self.plan.name} - {self.training.name} - {self.training.type} w {self.get_day_display()} o {self.time}"

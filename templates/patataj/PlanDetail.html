@@ -1,3 +1,35 @@
+{#{% extends 'base.html' %}#}
+{#{% block content %}#}
+{#    <div class="training-list-item transparency">#}
+{#        <h1 class="big-title">Szczegóły Planu</h1>#}
+{#        <div class="training-header">#}
+{#            <h2>{{ plan.name }}</h2>#}
+{#            <div class="training-buttons">#}
+{#                <a href="" class="btn-add-small">Dodaj trening do planu</a>#}
+{#                <a href="{% url 'plan_edit' plan.id %}" class="btn-edit">Edytuj plan</a>#}
+{#                <a href="{% url 'plan_delete' plan.id %}" class="btn-delete">Usuń plan</a>#}
+{#            </div>#}
+{#        </div>#}
+{#        <p>Opis:<br>{{ plan.description }}</p>#}
+{#    </div>#}
+{##}
+{#    {% for day_name, trainings in trainings_by_day %}#}
+{#        <div class="training-list-item transparency">#}
+{#            <h2>{{ day_name }}</h2>#}
+{#            <ul>#}
+{#                {% for training_plan in trainings %}#}
+{#                    <li>#}
+{#                        <strong>{{ training_plan.training.name }}</strong> {{ training_plan.training.get_type_display }}#}
+{#                        at {{ training_plan.time }} with {{ training_plan.trainer.name }} #}
+{#                        (Horse: {{ training_plan.horse.name }})#}
+{#                        <p>{{ training_plan.training.description }}</p>#}
+{#                    </li>#}
+{#                {% endfor %}#}
+{#            </ul>#}
+{#        </div>#}
+{#    {% endfor %}#}
+{#{% endblock %}#}
+
 {% extends 'base.html' %}
 {% block content %}
     <div class="training-list-item transparency">
@@ -10,7 +42,29 @@
                 <a href="{% url 'plan_delete' plan.id %}" class="btn-delete">Usuń plan</a>
             </div>
         </div>
-        <p>Opis:<br>{{ plan.description }}</p>
+        <p>Opis Planu:<br>{{ plan.description }}</p>
     </div>
 
+    {% for day_name, trainings in trainings_by_day.items %}
+        <div class="training-list-item transparency">
+            <h2>{{ day_name }}</h2>
+            {% for training in trainings %}
+                <div class="training-header">
+                    <strong>{{ training.name }}</strong>
+                    <div class="training-buttons">
+                        <a href="{% url 'training_detail' training.training.id %}" class="btn-detail">Szczegóły
+                            treningu</a>
+                        <a href="" class="btn-delete">Usuń trening z planu</a>
+                    </div>
+                </div>
+                <p>Nazwa treningu: {{ training.training.name }}</p>
+                {{ training.training.get_type_display }}
+                z {{ training.trainer.name }},
+                Koń: {{ training.horse.name }},
+                godzina: {{ training.time|time:"H:i" }},
+                czas trwania: {{ training.training.length }} min.
+                <p></p>
+            {% endfor %}
+        </div>
+    {% endfor %}
 {% endblock %}

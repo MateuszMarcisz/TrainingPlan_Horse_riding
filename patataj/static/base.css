@@ -373,3 +373,22 @@ a.btn-inline-cancel:hover {
 .button-container .btn-inline {
     margin: 10px;
 }
+
+.training-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.training-name {
+    flex-grow: 1;
+}
+
+.btn-delete-training {
+    margin-left: 10px;
+}
+
+.margin-bottom-10 {
+    margin-bottom: 10px;
+}
