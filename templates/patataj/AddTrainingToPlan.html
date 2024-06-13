@@ -1,0 +1,89 @@
+<!-- AddTrainingToPlan.html -->
+
+{% extends 'base.html' %}
+{% block content %}
+    <div class="centered">
+        <form method="POST" class="form-container-big big-add_form transparency">
+            {% csrf_token %}
+            <h1 class="big-title">Nowy Trening do Planu: {{ plan.name }}</h1>
+            <br>
+            <div class="form-group-big">
+                <label for="name">Nazwa:</label>
+                <input type="text" id="name" name="name" placeholder="Nazwa treningu">
+                {% if errors.name %}
+                    <br>
+                    <span class="text-danger">{{ errors.name }}</span>
+                {% endif %}
+            </div>
+
+            <div class="form-group-big">
+                <label for="training">Trening:</label>
+                <select id="training" name="training">
+                    <option value="">Wybierz trening</option>
+                    {% for training in trainings %}
+                        <option value="{{ training.id }}">{{ training.name }}</option>
+                    {% endfor %}
+                </select>
+                {% if errors.training %}
+                    <br>
+                    <span class="text-danger">{{ errors.training }}</span>
+                {% endif %}
+            </div>
+
+            <div class="form-group-big">
+                <label for="day">Dzień:</label>
+                <select id="day" name="day">
+                    <option value="">Wybierz dzień</option>
+                    {% for day_value, day_label in days %}
+                        <option value="{{ day_value }}">{{ day_label }}</option>
+                    {% endfor %}
+                </select>
+                {% if errors.day %}
+                    <br>
+                    <span class="text-danger">{{ errors.day }}</span>
+                {% endif %}
+            </div>
+
+            <div class="form-group-big">
+                <label for="time">Godzina:</label>
+                <input type="time" id="time" name="time">
+                {% if errors.time %}
+                    <br>
+                    <span class="text-danger">{{ errors.time }}</span>
+                {% endif %}
+            </div>
+
+            <div class="form-group-big">
+                <label for="horse">Koń:</label>
+                <select id="horse" name="horse">
+                    <option value="">Wybierz konia</option>
+                    {% for horse in horses %}
+                        <option value="{{ horse.id }}">{{ horse.name }}</option>
+                    {% endfor %}
+                </select>
+                {% if errors.horse %}
+                    <br>
+                    <span class="text-danger">{{ errors.horse }}</span>
+                {% endif %}
+            </div>
+
+            <div class="form-group-big">
+                <label for="trainer">Trener:</label>
+                <select id="trainer" name="trainer">
+                    <option value="">Wybierz trenera</option>
+                    {% for trainer in trainers %}
+                        <option value="{{ trainer.id }}">{{ trainer.name }}</option>
+                    {% endfor %}
+                </select>
+                {% if errors.trainer %}
+                    <br>
+                    <span class="text-danger">{{ errors.trainer }}</span>
+                {% endif %}
+            </div>
+
+            <div class="form-group-big centered">
+                <button type="submit" class="btn-inline">Dodaj</button>
+            </div>
+        </form>
+    </div>
+{% endblock %}

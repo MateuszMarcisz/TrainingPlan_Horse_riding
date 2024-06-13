@@ -116,8 +116,8 @@ TIME_ZONE = 'Europe/Warsaw'
 USE_I18N = True
 USE_L10N = True
 USE_TZ = True
-
-
+# TIME_INPUT_FORMATS = ["%H:%M"]
+TIME_FORMAT = 'H:i'
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.0/howto/static-files/
 

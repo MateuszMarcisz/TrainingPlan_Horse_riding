@@ -37,7 +37,7 @@
         <div class="training-header">
             <h2>{{ plan.name }}</h2>
             <div class="training-buttons">
-                <a href="" class="btn-add-small">Dodaj trening do planu</a>
+                <a href="{% url 'add_training_to_plan' plan.id %}" class="btn-add-small">Dodaj trening do planu</a>
                 <a href="{% url 'plan_edit' plan.id %}" class="btn-edit">Edytuj plan</a>
                 <a href="{% url 'plan_delete' plan.id %}" class="btn-delete">Usuń plan</a>
             </div>
