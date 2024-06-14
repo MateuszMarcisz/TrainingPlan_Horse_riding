@@ -48,21 +48,21 @@
     {% for day_name, trainings in trainings_by_day.items %}
         <div class="training-list-item transparency">
             <h2>{{ day_name }}</h2>
-            {% for training in trainings %}
+            {% for trainingplan in trainings %}
                 <div class="training-header">
-                    <strong>{{ training.name }}</strong>
+                    <strong>{{ trainingplan.training.name }}</strong>
                     <div class="training-buttons">
-                        <a href="{% url 'training_detail' training.training.id %}" class="btn-detail">Szczegóły
+                        <a href="{% url 'training_detail' trainingplan.training.id %}" class="btn-detail">Szczegóły
                             treningu</a>
-                        <a href="{% url 'delete_training_from_plan' training.id %}" class="btn-delete">Usuń trening z planu</a>
+                        <a href="{% url 'delete_training_from_plan' trainingplan.id %}" class="btn-delete">Usuń trening z planu</a>
                     </div>
                 </div>
-                <strong>Nazwa treningu:</strong> {{ training.training.name }}<br>
-                <strong>Typ treningu:</strong> {{ training.training.get_type_display }} <br>
-                <strong>Trener:</strong> {{ training.trainer.name }} <br>
-                <strong>Koń:</strong> {{ training.horse.name }}<br>
-                <strong>Godzina:</strong> {{ training.time|time:"H:i" }}<br>
-                <strong>Czas trwania:</strong> {{ training.training.length }} min.
+{#                <strong>Nazwa treningu:</strong> {{ trainingplan.training.name }}<br>#}
+                <strong>Typ treningu:</strong> {{ trainingplan.training.get_type_display }} <br>
+                <strong>Trener:</strong> {{ trainingplan.trainer.name }} <br>
+                <strong>Koń:</strong> {{ trainingplan.horse.name }}<br>
+                <strong>Godzina:</strong> {{ trainingplan.time|time:"H:i" }}<br>
+                <strong>Czas trwania:</strong> {{ trainingplan.training.length }} min.
                 <p><br></p>
 
             {% endfor %}

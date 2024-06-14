@@ -29,9 +29,8 @@ class TrainingPlanForm(forms.ModelForm):
 
     class Meta:
         model = TrainingPlan
-        fields = ['name', 'training', 'day', 'time', 'horse', 'trainer']
+        fields = ['training', 'day', 'time', 'horse', 'trainer']
         widgets = {
-            'name': forms.TextInput(attrs={'placeholder': 'Podaj Nazwę'}),
             'day': forms.Select(attrs={'class': 'form-control'}),
             'time': forms.TimeInput(format='%H:%M', attrs={'type': 'time', 'class': 'form-control'}),
         }
@@ -67,9 +66,8 @@ class TrainingToAnyPlanForm(forms.ModelForm):
 
     class Meta:
         model = TrainingPlan
-        fields = ['plan', 'name', 'training', 'day', 'time', 'horse', 'trainer']
+        fields = ['plan', 'training', 'day', 'time', 'horse', 'trainer']
         widgets = {
-            'name': forms.TextInput(attrs={'placeholder': 'Podaj Nazwę'}),
             'day': forms.Select(attrs={'class': 'form-control'}),
             'time': forms.TimeInput(format='%H:%M', attrs={'type': 'time', 'class': 'form-control'}),
         }

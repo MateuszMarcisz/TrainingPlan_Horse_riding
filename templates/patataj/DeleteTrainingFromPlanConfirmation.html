@@ -4,7 +4,7 @@
         <form method="POST" class="form-container-big transparency">
             <h1 class="big-title">Usunięcie treningu z planu</h1>
             <p class="centered">Czy jesteś pewien/pewna, że chcesz usunąć trening</p>
-            <h2 class="centered">{{ training_plan.name }}</h2>
+            <h2 class="centered">{{ training_plan.training.name }}</h2>
             <p class="centered">z planu</p>
             <h2 class="centered">{{ training_plan.plan.name }}</h2>
             {% csrf_token %}

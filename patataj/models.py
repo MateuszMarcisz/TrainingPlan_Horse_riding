@@ -67,7 +67,6 @@ class Trainer(models.Model):
 
 
 class TrainingPlan(models.Model):
-    name = models.CharField(max_length=100)
     training = models.ForeignKey(Training, on_delete=models.CASCADE)
     plan = models.ForeignKey(Plan, on_delete=models.CASCADE)
     day = models.CharField(

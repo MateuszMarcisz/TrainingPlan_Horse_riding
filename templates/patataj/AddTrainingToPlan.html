@@ -108,14 +108,6 @@
             <h1 class="big-title">Nowy Trening do Planu: {{ plan.name }}</h1>
             <br>
             {{ form.non_field_errors }}
-            <div class="form-group-big">
-                <label for="id_name">Nazwa:</label>
-                {{ form.name }}
-                {% if form.name.errors %}
-                    <br>
-                    <span class="text-danger">{{ form.name.errors }}</span>
-                {% endif %}
-            </div>
 
             <div class="form-group-big">
                 <label for="id_training">Trening:</label>
