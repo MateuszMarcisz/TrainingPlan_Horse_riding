@@ -23,7 +23,8 @@ class TrainingPlanForm(forms.ModelForm):
     )
     trainer = forms.ModelChoiceField(
         queryset=Trainer.objects.all(),
-        empty_label="Wybierz trenera",
+        empty_label="Wybierz trenera (opcjonalne)",
+        required=False,
         widget=forms.Select(attrs={'class': 'form-control'})
     )
 
@@ -60,7 +61,8 @@ class TrainingToAnyPlanForm(forms.ModelForm):
     )
     trainer = forms.ModelChoiceField(
         queryset=Trainer.objects.all(),
-        empty_label="Wybierz trenera",
+        empty_label="Wybierz trenera (opcjonalne)",
+        required=False,
         widget=forms.Select(attrs={'class': 'form-control'})
     )
 
