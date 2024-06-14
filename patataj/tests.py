@@ -921,10 +921,6 @@ def test_delete_trainer_works_properly(trainer, user):
     assert not Trainer.objects.filter(id=trainer.id).exists()
 
 
-
-
-
-
 @pytest.mark.django_db
 def test_add_training_to_plan_get(user, plan):
     client = Client()
@@ -996,3 +992,113 @@ def test_add_training_to_plan_post_missing_data(user, plan, training, horse, tra
     assert TrainingPlan.objects.count() == 0
     assert 'To pole jest wymagane' in response.content.decode()
 
+
+@pytest.mark.django_db
+def test_add_training_to_any_plan_get(user):
+    client = Client()
+    client.force_login(user)
+    url = reverse('add_training_to_any_plan')
+    response = client.get(url)
+    assert response.status_code == 200
+
+
+@pytest.mark.django_db
+def test_add_training_to_any_plan_get_not_logged():
+    client = Client()
+    url = reverse('add_training_to_any_plan')
+    response = client.get(url)
+    assert response.status_code == 302
+    login_url = reverse('login')
+    assert response.url == f'{login_url}?next={url}'
+
+
+@pytest.mark.django_db
+def test_add_training_to_any_plan_post(user, plan, training, horse, trainer):
+    client = Client()
+    client.force_login(user)
+    url = reverse('add_training_to_any_plan')
+    initial_count = TrainingPlan.objects.count()
+    data = {
+        'plan': plan.id,
+        'training': training.id,
+        'horse': horse.id,
+        'trainer': trainer.id,
+        'time': '05:12:09',
+        'day': "WT"
+    }
+    response = client.post(url, data)
+    assert response.status_code == 302
+    assert TrainingPlan.objects.count() == initial_count + 1
+    assert TrainingPlan.objects.get().day == 'WT'
+    assert TrainingPlan.objects.get(id=training.id).plan == plan
+    assert TrainingPlan.objects.get().plan.name == 'name'
+    assert TrainingPlan.objects.get().plan_id == plan.id
+    assert TrainingPlan.objects.get().trainer_id == trainer.id
+    assert TrainingPlan.objects.get().training_id == training.id
+    assert TrainingPlan.objects.get().horse_id == horse.id
+
+
+@pytest.mark.django_db
+def test_add_training_to_plan_get_wrong_user(user, training, trainer, horse, plan2):
+    client = Client()
+    client.force_login(user)
+    url = reverse('add_training_to_any_plan')
+    # plan2 has different user
+    data = {
+        'plan': plan2.id,
+        'training': training.id,
+        'horse': horse.id,
+        'trainer': trainer.id,
+        'time': '05:12:09',
+        'day': "WT"
+    }
+    response = client.post(url, data)
+    assert response.status_code == 200
+    assert TrainingPlan.objects.count() == 0
+
+
+@pytest.mark.django_db
+def test_add_training_to_any_plan_post_missing_data(user, plan, training, horse, trainer):
+    client = Client()
+    client.force_login(user)
+    data = {
+        'plan': plan.id,
+        'training': training.id,
+        'horse': horse.id,
+        'trainer': trainer.id,
+    }
+    url = reverse('add_training_to_any_plan')
+    response = client.post(url, data)
+    assert response.status_code == 200
+    assert TrainingPlan.objects.count() == 0
+    assert 'To pole jest wymagane' in response.content.decode()
+
+
+@pytest.mark.django_db
+def test_add_training_to_any_plan_post_missing_data(user, plan, training, horse, trainer):
+    client = Client()
+    client.force_login(user)
+    data = {
+        'training': training.id,
+        'horse': horse.id,
+        'trainer': trainer.id,
+        'time': '05:12:09',
+        'day': "WT"
+    }
+    url = reverse('add_training_to_any_plan')
+    response = client.post(url, data)
+    assert response.status_code == 200
+    assert TrainingPlan.objects.count() == 0
+    assert 'To pole jest wymagane' in response.content.decode()
+
+
+@pytest.mark.django_db
+def test_delete_training_from_plan(user, training_plans, horse, plan, trainer, training):
+    client = Client()
+    client.force_login(user)
+    training_plan = TrainingPlan.objects.get(id=1)
+    initial_count = TrainingPlan.objects.count()
+    url = reverse('delete_training_from_plan', args=(training_plan.id,))
+    response = client.post(url)
+    assert response.status_code == 302
+    assert TrainingPlan.objects.count() == initial_count - 1
