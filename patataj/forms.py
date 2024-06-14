@@ -1,5 +1,5 @@
 from django import forms
-from .models import TrainingPlan, Training, Horse, Trainer, Plan
+from .models import TrainingPlan, Training, Horse, Trainer, Plan, TrainingType
 
 
 # We can adjust what is display in the choices either by editing __str__ in models, but if we do not want to do that,
@@ -81,3 +81,25 @@ class TrainingToAnyPlanForm(forms.ModelForm):
             self.fields['plan'].queryset = Plan.objects.filter(user=user)
             self.fields['horse'].queryset = Horse.objects.filter(owner=user)
 
+
+class TrainerForm(forms.ModelForm):
+    training_type = forms.ChoiceField(
+        choices=[('', 'wybierz typ treningu')] + list(TrainingType.choices),
+        widget=forms.Select(attrs={'class': 'form-control'})
+    )
+
+    class Meta:
+        model = Trainer
+        fields = ['name', 'training_type', 'description']
+        widgets = {
+            'name': forms.TextInput(attrs={'class': 'form-control'}),
+            'description': forms.Textarea(attrs={'class': 'form-control'}),
+        }
+        error_messages = {
+            'name': {
+                'required': 'Imię/Nazwisko trenera jest wymagane!'
+            },
+            'training_type': {
+                'required': 'Typ treningu jest wymagany!'
+            },
+        }

@@ -60,7 +60,7 @@ class Trainer(models.Model):
         max_length=2,
         choices=TrainingType.choices
     )
-    description = models.TextField()
+    description = models.TextField(null=True, blank=True)
 
     def __str__(self):
         return f"{self.name} trening: {self.get_training_type_display()}"

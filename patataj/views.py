@@ -7,7 +7,7 @@ from django.views.generic import TemplateView
 from django.contrib import messages
 
 from patataj import models
-from patataj.forms import TrainingPlanForm, TrainingToAnyPlanForm
+from patataj.forms import TrainingPlanForm, TrainingToAnyPlanForm, TrainerForm
 from patataj.models import Training, TrainingType, Plan, Horse, Trainer, TrainingPlan, TrainingPlanDay
 
 
@@ -451,44 +451,57 @@ class TrainerDetailView(View):
 
 
 class AddTrainerView(LoginRequiredMixin, View):
+
     def get(self, request):
-        training_type_choices = TrainingType.choices
-        return render(request, 'patataj/AddTrainer.html', {'training_type_choices': training_type_choices})
+        form = TrainerForm()
+        return render(request, 'patataj/AddTrainer.html', {'form': form})
 
     def post(self, request):
-        name = request.POST.get('name')
-        training_type = request.POST.get('training_type')
-        description = request.POST.get('description')
-        training_type_choices = TrainingType.choices
-        errors = {}
-        if not name:
-            errors['name'] = 'Imię/Nazwisko trenera jest wymagane!'
-        if not training_type:
-            errors['training_type'] = 'Typ treningu jest wymagany!'
-        if not description:
-            errors['description'] = 'Opis trenera jest wymagany!'
-        if errors:
-            return render(request, 'patataj/AddTrainer.html', {
-                'errors': errors,
-                'name': name,
-                'training_type': training_type,
-                'description': description,
-                'training_type_choices': training_type_choices
-            })
-
-        try:
-            trainer = Trainer.objects.create(
-                name=name,
-                training_type=training_type,
-                description=description
-            )
+        form = TrainerForm(request.POST)
+        if form.is_valid():
+            trainer = form.save()
             return redirect('trainer_detail', pk=trainer.pk)
+        else:
+            return render(request, 'patataj/AddTrainer.html', {'form': form})
 
-        except Exception as e:
-            return render(request, 'patataj/AddTrainer.html', {
-                'errors': e,
-                'training_type_choices': training_type_choices
-            })
+    # def get(self, request):
+    #     training_type_choices = TrainingType.choices
+    #     return render(request, 'patataj/AddTrainer.html', {'training_type_choices': training_type_choices})
+    #
+    # def post(self, request):
+    #     name = request.POST.get('name')
+    #     training_type = request.POST.get('training_type')
+    #     description = request.POST.get('description')
+    #     training_type_choices = TrainingType.choices
+    #     errors = {}
+    #     if not name:
+    #         errors['name'] = 'Imię/Nazwisko trenera jest wymagane!'
+    #     if not training_type:
+    #         errors['training_type'] = 'Typ treningu jest wymagany!'
+    #     if not description:
+    #         errors['description'] = 'Opis trenera jest wymagany!'
+    #     if errors:
+    #         return render(request, 'patataj/AddTrainer.html', {
+    #             'errors': errors,
+    #             'name': name,
+    #             'training_type': training_type,
+    #             'description': description,
+    #             'training_type_choices': training_type_choices
+    #         })
+    #
+    #     try:
+    #         trainer = Trainer.objects.create(
+    #             name=name,
+    #             training_type=training_type,
+    #             description=description
+    #         )
+    #         return redirect('trainer_detail', pk=trainer.pk)
+    #
+    #     except Exception as e:
+    #         return render(request, 'patataj/AddTrainer.html', {
+    #             'errors': e,
+    #             'training_type_choices': training_type_choices
+    #         })
 
 
 class DeleteTrainerView(LoginRequiredMixin, View):
