@@ -1,37 +1,11 @@
-{#{% extends 'base.html' %}#}
-{#{% block content %}#}
-{#    <div class="training-list-item transparency">#}
-{#        <h1 class="big-title">Szczegóły Planu</h1>#}
-{#        <div class="training-header">#}
-{#            <h2>{{ plan.name }}</h2>#}
-{#            <div class="training-buttons">#}
-{#                <a href="" class="btn-add-small">Dodaj trening do planu</a>#}
-{#                <a href="{% url 'plan_edit' plan.id %}" class="btn-edit">Edytuj plan</a>#}
-{#                <a href="{% url 'plan_delete' plan.id %}" class="btn-delete">Usuń plan</a>#}
-{#            </div>#}
-{#        </div>#}
-{#        <p>Opis:<br>{{ plan.description }}</p>#}
-{#    </div>#}
-{##}
-{#    {% for day_name, trainings in trainings_by_day %}#}
-{#        <div class="training-list-item transparency">#}
-{#            <h2>{{ day_name }}</h2>#}
-{#            <ul>#}
-{#                {% for training_plan in trainings %}#}
-{#                    <li>#}
-{#                        <strong>{{ training_plan.training.name }}</strong> {{ training_plan.training.get_type_display }}#}
-{#                        at {{ training_plan.time }} with {{ training_plan.trainer.name }} #}
-{#                        (Horse: {{ training_plan.horse.name }})#}
-{#                        <p>{{ training_plan.training.description }}</p>#}
-{#                    </li>#}
-{#                {% endfor %}#}
-{#            </ul>#}
-{#        </div>#}
-{#    {% endfor %}#}
-{#{% endblock %}#}
-
 {% extends 'base.html' %}
 {% block content %}
+    <div class="filter-and-add">
+        <a href="{% url 'training_add' %}" class="btn-add">Dodaj trening</a>
+        <a href="{% url 'plan_add' %}" class="btn-add">Dodaj Plan</a>
+        <a href="{% url 'add_training_to_any_plan' %}" class="btn-add">Dodaj trening do planu</a>
+    </div>
+
     <div class="training-list-item transparency">
         <h1 class="big-title">Szczegóły Planu</h1>
         <div class="training-header">
@@ -54,10 +28,11 @@
                     <div class="training-buttons">
                         <a href="{% url 'training_detail' trainingplan.training.id %}" class="btn-detail">Szczegóły
                             treningu</a>
-                        <a href="{% url 'delete_training_from_plan' trainingplan.id %}" class="btn-delete">Usuń trening z planu</a>
+                        <a href="{% url 'delete_training_from_plan' trainingplan.id %}" class="btn-delete">Usuń trening
+                            z planu</a>
                     </div>
                 </div>
-{#                <strong>Nazwa treningu:</strong> {{ trainingplan.training.name }}<br>#}
+                {#                <strong>Nazwa treningu:</strong> {{ trainingplan.training.name }}<br>#}
                 <strong>Typ treningu:</strong> {{ trainingplan.training.get_type_display }} <br>
                 <strong>Trener:</strong> {{ trainingplan.trainer.name }} <br>
                 <strong>Koń:</strong> {{ trainingplan.horse.name }}<br>

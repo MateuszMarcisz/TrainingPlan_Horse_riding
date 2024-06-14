@@ -1,5 +1,8 @@
 {% extends 'base.html' %}
 {% block content %}
+    <div class="filter-and-add">
+        <a href="{% url 'horse_add' %}" class="btn-add">Nowy Koń</a>
+    </div>
     <div class="training-list-item transparency">
         <h1 class="big-title">Szczegóły Konia</h1>
         <div class="training-header">
