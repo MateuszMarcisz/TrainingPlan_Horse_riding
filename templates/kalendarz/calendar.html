@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+    <h1 class="big-title">Kalendarz</h1>
+
+    <div class="filter-and-add">
+        <a href="{% url 'add_event' %}" class="btn-add">Dodaj wydarzenie</a>
+    </div>
+
+    <div id="calendar"></div>
+    <script>
+        // Passing events data to the external JS file
+        var calendarEvents = [
+            {% for event in events %}
+                {
+                    title: '{{ event.title }}',
+                    start: '{{ event.start_time|date:"c" }}',
+                    end: '{{ event.end_time|date:"c" }}',
+                    extendedProps: {
+                        duration: '{{ event.duration }}' 
+                    }
+                },
+            {% endfor %}
+        ];
+    </script>
+    <script src="{% static 'js/calendar.js' %}"></script>
+{% endblock %}

@@ -5,36 +5,39 @@
     <meta charset="UTF-8">
     <title>Homepage | Patataj </title>
     <link type="text/css" href="{% static 'base.css' %}" rel="stylesheet">
+    <link href='https://cdn.jsdelivr.net/npm/fullcalendar@5.10.1/main.min.css' rel='stylesheet'/>
+    <script src='https://cdn.jsdelivr.net/npm/fullcalendar@5.10.1/main.min.js'></script>
 </head>
 <body>
-    <div class="wrapper">
-        <div class="margin left"></div>
-        <div class="center">
-            <header class="topnav">
-                <div>
-                    <a href="/" class="logo"><strong>Patataj</strong></a><a href="{% url 'training_list' %}">Treningi</a>
-                    {% if user.is_authenticated %}
+<div class="wrapper">
+    <div class="margin left"></div>
+    <div class="center">
+        <header class="topnav">
+            <div>
+                <a href="/" class="logo"><strong>Patataj</strong></a><a href="{% url 'training_list' %}">Treningi</a>
+                {% if user.is_authenticated %}
                     <a href="{% url 'plan_list' %}">Plany</a>
                     <a href="{% url 'horse_list' %}">Moje Konie</a>
-                    {% endif %}
-                    <a href="{% url 'trainer_list' %}">Trenerzy</a>
-{#                    <a href="{% url 'test' %}">Testy</a>#}
-                </div>
-                <div>
-                    {% if user.is_authenticated %}
-                        <a class="user">Witaj {{ user }}!</a><a href="{% url 'logout' %}">Wyloguj się</a>
-                    {% else %}
-                        <a href="{% url 'register' %}">Zarejestruj się</a>
-                        <a href="{% url 'login' %}">Zaloguj się</a>
-                    {% endif %}
-                </div>
-            </header>
-            <div class="content">
-                {% block content %}
-                {% endblock %}
+                {% endif %}
+                <a href="{% url 'trainer_list' %}">Trenerzy</a>
+                {#                    <a href="{% url 'test' %}">Testy</a>#}
+                <a href="{% url 'calendar' %}">Kalendarz</a>
             </div>
+            <div>
+                {% if user.is_authenticated %}
+                    <a class="user">Witaj {{ user }}!</a><a href="{% url 'logout' %}">Wyloguj się</a>
+                {% else %}
+                    <a href="{% url 'register' %}">Zarejestruj się</a>
+                    <a href="{% url 'login' %}">Zaloguj się</a>
+                {% endif %}
+            </div>
+        </header>
+        <div class="content">
+            {% block content %}
+            {% endblock %}
         </div>
-        <div class="margin right"></div>
     </div>
+    <div class="margin right"></div>
+</div>
 </body>
 </html>
