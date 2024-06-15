@@ -10,3 +10,13 @@ class EventForm(forms.ModelForm):
             'start_time': forms.DateTimeInput(attrs={'type': 'datetime-local'}),
             'end_time': forms.DateTimeInput(attrs={'type': 'datetime-local'}),
         }
+
+
+class EventEditForm(forms.ModelForm):
+    class Meta:
+        model = Event
+        fields = ['title', 'start_time', 'end_time', 'description']
+        widgets = {
+            'start_time': forms.DateTimeInput(attrs={'type': 'datetime-local'}),
+            'end_time': forms.DateTimeInput(attrs={'type': 'datetime-local'}),
+        }
