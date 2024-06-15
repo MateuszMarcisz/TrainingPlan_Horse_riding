@@ -38,7 +38,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     "accounts.apps.AccountsConfig",
-    "patataj.apps.PatatajConfig"
+    "patataj.apps.PatatajConfig",
+    "kalendarz.apps.KalendarzConfig"
 ]
 
 MIDDLEWARE = [

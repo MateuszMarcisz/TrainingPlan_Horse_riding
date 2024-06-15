@@ -19,9 +19,11 @@ from django.urls import path, include
 from patataj import views
 from patataj.views import HomeView
 
+
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', HomeView.as_view(), name='home'),
     path('accounts/', include('accounts.urls')),
-    path('treningikonne/', include("patataj.urls"))
+    path('treningikonne/', include("patataj.urls")),
+    path('calendar/', include("kalendarz.urls")),
 ]

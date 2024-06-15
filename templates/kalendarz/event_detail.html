@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+{% block content %}
+    <div class="training-list-item transparency">
+        <h1 class="big-title">{{ event.title }}</h1>
+        <p><strong>Początek:</strong> {{ event.start_time }}</p>
+        <p><strong>Koniec:</strong> {{ event.end_time }}</p>
+        <p><strong>Opis:</strong> {{ event.description }}</p>
+            <div class="training-buttons centered">
+                <a href="{% url 'event_edit' event.id %}" class="btn-edit">Edytuj</a>
+            </div>
+    </div>
+{% endblock %}
