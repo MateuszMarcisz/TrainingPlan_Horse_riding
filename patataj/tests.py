@@ -801,36 +801,6 @@ def test_add_trainer_post_missing_data(user):
     assert response.status_code == 200
     assert Plan.objects.count() == 0
 
-#
-# @pytest.mark.django_db
-# def test_add_trainer_post_empty_field(user):
-#     client = Client()
-#     client.force_login(user)
-#     data = {
-#         'name': 'Leo Beenhakker',
-#         'training_type': 'CR',
-#         'description': '',
-#     }
-#     url = reverse('trainer_add')
-#     response = client.post(url, data)
-#     assert response.status_code == 302
-#     assert Plan.objects.count() == 0
-#     # assert 'Opis trenera jest wymagany!' in response.content.decode()  # no longer the case, removed required desc
-#     data2 = {
-#         'name': '',
-#         'training_type': 'CR',
-#         'description': 'For money!',
-#     }
-#     response = client.post(url, data2)
-#     assert 'Imię/Nazwisko trenera jest wymagane!' in response.content.decode()
-#     data3 = {
-#         'name': 'Leo Beenhakker',
-#         'training_type': '',
-#         'description': 'For money!',
-#     }
-#     response = client.post(url, data3)
-#     assert 'Typ treningu jest wymagany!' in response.content.decode()
-
 
 @pytest.mark.django_db
 def test_trainer_edit_get(trainer, user):
