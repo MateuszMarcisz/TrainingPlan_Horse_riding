@@ -7,6 +7,7 @@
         <p><strong>Opis:</strong> {{ event.description }}</p>
             <div class="training-buttons centered">
                 <a href="{% url 'event_edit' event.id %}" class="btn-edit">Edytuj</a>
+                <a href="{% url 'event_delete' event.id %}" class="btn-delete">Usuń Wydarzenie</a>
             </div>
     </div>
 {% endblock %}

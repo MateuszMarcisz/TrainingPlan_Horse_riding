@@ -58,3 +58,19 @@ class EventEditView(UserPassesTestMixin, View):
             form.save()
             return redirect('calendar')
         return render(request, 'kalendarz/edit_event.html', {'form': form, 'event': event})
+
+
+class EventDeleteView(UserPassesTestMixin, View):
+    def test_func(self):
+        pk = self.kwargs.get('pk')
+        event = get_object_or_404(Event, pk=pk)
+        return self.request.user == event.user
+
+    def get(self, request, pk):
+        event = get_object_or_404(Event, pk=pk)
+        return render(request, 'kalendarz/event_delete_confirm.html', {'event': event})
+
+    def post(self, request, pk):
+        event = get_object_or_404(Event, pk=pk)
+        event.delete()
+        return redirect('calendar')

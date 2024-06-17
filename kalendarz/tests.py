@@ -272,3 +272,53 @@ def test_event_edit_post_missing_field(event, user):
     response = client.post(url, data)
     assert response.status_code == 200
     assert 'To pole jest wymagane' in response.content.decode()
+
+
+@pytest.mark.django_db
+def test_event_delete_get(event, user):
+    client = Client()
+    client.force_login(user)
+    url = reverse('event_delete', kwargs={'pk': event.pk})
+    response = client.get(url)
+    assert response.status_code == 200
+
+
+@pytest.mark.django_db
+def test_event_delete_get_not_logged(event):
+    client = Client()
+    url = reverse('event_delete', kwargs={'pk': event.pk})
+    response = client.get(url)
+    assert response.status_code == 302
+    login_url = reverse('login')
+    assert response.url == f'{login_url}?next={url}'
+
+
+@pytest.mark.django_db
+def test_event_delete_get_wrong_user(event, user):
+    client = Client()
+    user2 = User.objects.create_user(username='user2', password='<PASSWORD>')
+    client.force_login(user2)
+    url = reverse('event_delete', kwargs={'pk': event.pk})
+    response = client.get(url)
+    assert response.status_code == 403
+
+
+@pytest.mark.django_db
+def test_event_delete_post(event, user):
+    client = Client()
+    client.force_login(user)
+    url = reverse('event_delete', args=(event.id,))
+    response = client.post(url, follow=True)
+    assert response.status_code == 200
+    assert not Event.objects.filter(id=event.id).exists()
+    assert Event.objects.count() == 0
+
+
+@pytest.mark.django_db
+def test_event_delete_post_wrong_user(event, user):
+    client = Client()
+    user2 = User.objects.create_user(username='user2', password='<PASSWORD>')
+    client.force_login(user2)
+    url = reverse('event_delete', args=(event.id,))
+    response = client.post(url, follow=True)
+    assert response.status_code == 403
