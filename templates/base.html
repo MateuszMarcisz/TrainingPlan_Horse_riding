@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <title>{% block title %}Homepage{% endblock %} | Patataj </title>
     <link type="text/css" href="{% static 'base.css' %}" rel="stylesheet">
+    <link rel="shortcut icon" type="image/x-icon" href="{% static 'images/favicon.ico' %}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link href='https://cdn.jsdelivr.net/npm/fullcalendar@5.10.1/main.min.css' rel='stylesheet'/>
     <script src='https://cdn.jsdelivr.net/npm/fullcalendar@5.10.1/main.min.js'></script>
@@ -15,7 +16,8 @@
     <div class="center">
         <header class="topnav">
             <div>
-                <a href="/" class="logo"><i class="fas fa-horse-head"></i><strong> Patataj</strong></a><a href="{% url 'training_list' %}"><i class="fas fa-dumbbell"></i> Treningi</a>
+                <a href="/" class="logo"><i class="fas fa-horse-head"></i><strong> Patataj</strong></a><a
+                    href="{% url 'training_list' %}"><i class="fas fa-dumbbell"></i> Treningi</a>
                 {% if user.is_authenticated %}
                     <a href="{% url 'plan_list' %}"><i class="fas fa-clipboard-list"></i> Plany</a>
                     <a href="{% url 'horse_list' %}"><i class="fas fa-horse"></i> Moje Konie</a>
@@ -26,9 +28,11 @@
 
             <div>
                 {% if user.is_authenticated %}
-                    <a class="user"><i class="fas fa-user"></i> Witaj {{ user }}!</a><a href="{% url 'logout' %}"><i class="fas fa-sign-out-alt"></i> Wyloguj się</a>
+                    <a class="user"><i class="fas fa-user"></i> Witaj {{ user }}!</a>
+                    <a href="{% url 'logout' %}"><i class="fas fa-sign-out-alt"></i> Wyloguj się</a>
                 {% else %}
-                    <a href="{% url 'register' %}"><i class="fas fa-user-plus"></i> Zarejestruj się</a><a href="{% url 'login' %}"><i class="fas fa-sign-in-alt"></i> Zaloguj się</a>
+                    <a href="{% url 'register' %}"><i class="fas fa-user-plus"></i> Zarejestruj się</a>
+                    <a href="{% url 'login' %}"><i class="fas fa-sign-in-alt"></i> Zaloguj się</a>
                 {% endif %}
             </div>
         </header>
