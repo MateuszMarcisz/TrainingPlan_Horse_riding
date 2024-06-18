@@ -15,7 +15,7 @@
     <div class="center">
         <header class="topnav">
             <div>
-                <a href="/" class="logo"><strong>Patataj</strong></a><a href="{% url 'training_list' %}"><i class="fas fa-dumbbell"></i> Treningi</a>
+                <a href="/" class="logo"><i class="fas fa-horse-head"></i><strong> Patataj</strong></a><a href="{% url 'training_list' %}"><i class="fas fa-dumbbell"></i> Treningi</a>
                 {% if user.is_authenticated %}
                     <a href="{% url 'plan_list' %}"><i class="fas fa-clipboard-list"></i> Plany</a>
                     <a href="{% url 'horse_list' %}"><i class="fas fa-horse"></i> Moje Konie</a>
@@ -23,6 +23,7 @@
                 <a href="{% url 'trainer_list' %}"><i class="fas fa-hat-cowboy"></i> Trenerzy</a>
                 <a href="{% url 'calendar' %}"><i class="fas fa-calendar-alt"></i> Kalendarz</a>
             </div>
+
             <div>
                 {% if user.is_authenticated %}
                     <a class="user"><i class="fas fa-user"></i> Witaj {{ user }}!</a><a href="{% url 'logout' %}"><i class="fas fa-sign-out-alt"></i> Wyloguj się</a>

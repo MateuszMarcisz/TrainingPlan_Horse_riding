@@ -41,7 +41,7 @@ body {
     background-color: #E6E6FA;
     color: black;
     text-align: center;
-    padding: 20px 20px;
+    padding: 25px 20px;
     text-decoration: none;
     font-size: 20px;
 }
@@ -62,6 +62,7 @@ body {
     color: black;
     text-align: center;
     background-color: #E0FFFF;
+    padding: 25px 20px;
 }
 
 
@@ -469,6 +470,64 @@ a.btn-inline-cancel:hover {
 .box i {
     color: rgba(205, 92, 92, 0.9);
     margin: 20px;
+}
+
+/*Homepage footer section*/
+
+.contact-section {
+    display: flex;
+    background-color: rgba(135, 206, 250, 0.9);
+    padding: 20px;
+    border-radius: 10px;
+    margin-top: 100px;
+}
+
+.contact-item {
+    flex: 1;
+    text-align: center;
+    padding: 20px;
+}
+
+.contact-item h2 {
+    font-size: 1.5em;
+    color: black;
+    margin-bottom: 10px;
+}
+
+.contact-item p {
+    font-size: 1.2em;
+}
+
+.contact-item a {
+    color: #CD5C5C;
+    text-decoration: none;
+    margin-right: 15px;
+}
+
+.contact-item a:hover {
+    color: #E6E6FA;
+}
+
+.contact-item-2 {
+    flex: 1;
+    text-align: center;
+    padding: 20px;
+}
+
+.contact-item-2 h2 {
+    font-size: 1.5em;
+    color: black;
+    margin-bottom: 10px;
+}
+
+.contact-item-2 p {
+    font-size: 1.2em;
+}
+
+.contact-item-2 input[type="email"] {
+    padding: 10px;
+    width: 200px;
+    margin-top: 5px;
 }
 
 /*No modal after all*/
