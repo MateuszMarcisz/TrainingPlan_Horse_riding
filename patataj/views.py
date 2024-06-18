@@ -192,27 +192,6 @@ class PlanListView(LoginRequiredMixin, View):
         return render(request, 'patataj/PlanList.html', {'page_object': page_object})
 
 
-# class PlanDetailView(UserPassesTestMixin, View):
-#     def test_func(self):
-#         plan = models.Plan.objects.get(pk=self.kwargs['pk'])
-#         return self.request.user == plan.user
-#
-#     def get(self, request, pk):
-#         plan = get_object_or_404(Plan, pk=pk)
-#         days_plan = TrainingPlan.objects.filter(plan=plan).values_list('day', flat=True).distinct()
-#         trainings_by_day = []
-#
-#         for day in TrainingPlanDay:
-#             if day.value in days_plan:
-#                 day_name = day.label
-#                 trainings = TrainingPlan.objects.filter(plan=plan, day=day.value)
-#                 trainings_by_day.append((day_name, trainings))
-#
-#         return render(request, 'patataj/PlanDetail.html', {
-#             'plan': plan,
-#             'trainings_by_day': trainings_by_day
-#         })
-
 class PlanDetailView(UserPassesTestMixin, View):
     def test_func(self):
         plan = models.Plan.objects.get(pk=self.kwargs['pk'])
@@ -629,4 +608,3 @@ class DeleteTrainingFromPlanView(LoginRequiredMixin, View):
             HttpResponseForbidden()
         training_plan.delete()
         return redirect('plan_detail', pk=training_plan.plan.pk)
-

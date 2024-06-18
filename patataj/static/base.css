@@ -3,10 +3,12 @@ body {
     font-family: Arial, Helvetica, sans-serif;
 }
 
+/*margins for 10% on each side*/
+
 .margin {
     width: 10%;
     background-color: #778899;
-    /*height: 100vh; !* Ensure the margin divs take the full height *!*/
+    /*height: 100vh; */
     min-height: 100vh;
 }
 
@@ -20,6 +22,8 @@ body {
     display: flex;
     flex-direction: column;
 }
+
+/*Top menu and buttons*/
 
 .topnav {
     overflow: hidden;
@@ -41,7 +45,7 @@ body {
     background-color: #E6E6FA;
     color: black;
     text-align: center;
-    padding: 25px 20px;
+    padding: 20px 20px;
     text-decoration: none;
     font-size: 20px;
 }
@@ -50,7 +54,7 @@ body {
     background-color: #FFB6C1;
     color: #CD5C5C;
     font-family: "Brush Script MT", cursive, sans-serif;
-    font-size: 28px;
+    font-size: 22px;
     padding: 20px 30px;
 }
 
@@ -62,9 +66,13 @@ body {
     color: black;
     text-align: center;
     background-color: #E0FFFF;
-    padding: 25px 20px;
+    padding: 20px 20px;
+    text-decoration: none;
+    font-size: 20px;
 }
 
+/* content applies to basically everything displayed below top menu */
+/* we apply here background in form the photo  */
 
 .content {
     background-image: url('images/mysz_vertical.jpg');
@@ -73,9 +81,11 @@ body {
     background-repeat: no-repeat;
     padding: 20px;
     flex-grow: 1;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Optional: to add a shadow effect */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* to add a shadow effect */
     /*color: #fff; !* Optional: to ensure text is readable over the image *!*/
 }
+
+/* regular form container used mostly for login/user registration */
 
 .form-container {
     max-width: 400px;
@@ -125,6 +135,8 @@ body {
     margin-bottom: 20px;
 }
 
+/* this one is used for filtering div on the list views */
+
 .form-container-inline {
     /*max-width: 1000px;*/
     margin: auto;
@@ -173,6 +185,9 @@ body {
     color: red;
 }
 
+/* this one despite using name training is used almost everywhere :) */
+/* we use it where we have multiple divs inside that we want to be cycled with colors blue/grey */
+
 .training-list-item {
     background-color: #f0f0f0; /* Default background color */
     padding: 15px;
@@ -202,12 +217,16 @@ body {
     margin-bottom: 20px;
 }
 
+/* this class is used for buttons at the top of the view that need to be on the right side of the screen */
+
 .filter-and-add {
     display: flex;
     justify-content: flex-end; /* Align items to the right */
     gap: 10px; /* Space between the buttons */
     margin-bottom: 20px;
 }
+
+/* a bunch of styling for different buttons */
 
 .btn-add {
     background-color: #40E0D0;
@@ -280,12 +299,15 @@ body {
     text-decoration: none;
 }
 
+/* if we want something centered we use this */
+
 .centered {
     display: flex;
     justify-content: center;
     align-items: center;
 }
 
+/* this class is used for most of our forms. It's twice the size of regular form that's used user registration/login */
 
 .form-container-big {
     max-width: 800px;
@@ -320,14 +342,17 @@ body {
     box-sizing: border-box;
 }
 
-
 .big-add_form {
     width: 100%;
 }
 
+/* we use this for most of our content that allows us to make the content slightly transparent and to see background photo */
+
 .transparency {
     opacity: 0.9
 }
+
+/* buttons for cancellation/confirmation of deletion of the certain content */
 
 a.btn-inline-cancel {
     display: inline-block;
@@ -371,6 +396,8 @@ a.btn-inline-cancel:hover {
     margin: 10px;
 }
 
+/* those few below were made to be used for something but needs to be check if are needed still */
+
 .training-item {
     display: flex;
     justify-content: space-between;
@@ -390,7 +417,7 @@ a.btn-inline-cancel:hover {
     margin-bottom: 10px;
 }
 
-/* Calendar */
+/* Calendar styling */
 
 #calendar {
     /*max-width: 1200px;*/
@@ -409,15 +436,15 @@ a.btn-inline-cancel:hover {
 
 .fc-event {
     background-color: #87CEFA;
-    color: black; /* Kolor tekstu wydarzenia */
-    border: none; /* Usuń obramowanie, jeśli jest niepotrzebne */
+    color: black;
+    border: none;
 }
 
 
 /* Homepage */
 
 .transparency-description {
-    background-color: rgba(255, 255, 255, 0.8); /* Półprzezroczysty biały kolor */
+    background-color: rgba(255, 255, 255, 0.8);
     padding: 20px;
     border-radius: 10px;
     width: 70%;
@@ -439,6 +466,8 @@ a.btn-inline-cancel:hover {
     font-family: "Brush Script MT", cursive, sans-serif;
     font-size: 1.5em;
 }
+
+/* used for three boxes on the homepage with description of the website */
 
 .box-container {
     display: flex;
@@ -472,7 +501,7 @@ a.btn-inline-cancel:hover {
     margin: 20px;
 }
 
-/*Homepage footer section*/
+/* Homepage footer section */
 
 .contact-section {
     display: flex;
@@ -501,7 +530,7 @@ a.btn-inline-cancel:hover {
 .contact-item a {
     color: #CD5C5C;
     text-decoration: none;
-    margin-right: 15px;
+    margin-right: 10px;
 }
 
 .contact-item a:hover {
@@ -530,7 +559,21 @@ a.btn-inline-cancel:hover {
     margin-top: 5px;
 }
 
-/*No modal after all*/
+.btn-contact {
+    background-color: #40E0D0;
+    color: black;
+    padding: 10px 20px;
+    border: 2px solid #555555;
+    cursor: pointer;
+    font-size: 0.7em;
+    text-decoration: none;
+}
+
+.btn-contact:hover {
+    background-color: #E6E6FA;
+}
+
+/* No modal after all. Saved for later in case I change my mind. */
 /*Calendar modal*/
 
 /*.modal {*/
