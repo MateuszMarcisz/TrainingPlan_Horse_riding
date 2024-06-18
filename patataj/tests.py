@@ -937,7 +937,7 @@ def test_add_training_to_plan_post(user, plan, training, horse, trainer):
     response = client.post(url, data)
     assert response.status_code == 302
     assert TrainingPlan.objects.count() == initial_count + 1
-    assert TrainingPlan.objects.get(id=training.id).plan == plan
+    # assert TrainingPlan.objects.get(id=training.id).plan == plan
     assert TrainingPlan.objects.get().plan.name == 'name'
     assert TrainingPlan.objects.get().plan_id == plan.id
     assert TrainingPlan.objects.get().horse_id == horse.id
@@ -1000,7 +1000,6 @@ def test_add_training_to_any_plan_post(user, plan, training, horse, trainer):
     assert response.status_code == 302
     assert TrainingPlan.objects.count() == initial_count + 1
     assert TrainingPlan.objects.get().day == 'WT'
-    assert TrainingPlan.objects.get(id=training.id).plan == plan
     assert TrainingPlan.objects.get().plan.name == 'name'
     assert TrainingPlan.objects.get().plan_id == plan.id
     assert TrainingPlan.objects.get().trainer_id == trainer.id
@@ -1063,12 +1062,15 @@ def test_add_training_to_any_plan_post_missing_data(user, plan, training, horse,
 
 
 @pytest.mark.django_db
-def test_delete_training_from_plan(user, training_plans, horse, plan, trainer, training):
+def test_delete_training_from_plan(user, horse, training_plans, plan, trainer, training):
     client = Client()
     client.force_login(user)
-    training_plan = TrainingPlan.objects.get(id=1)
+    # training_plan = TrainingPlan.objects.get(id=1)
+    training_plan = training_plans[0]
     initial_count = TrainingPlan.objects.count()
     url = reverse('delete_training_from_plan', args=(training_plan.id,))
     response = client.post(url)
     assert response.status_code == 302
     assert TrainingPlan.objects.count() == initial_count - 1
+
+

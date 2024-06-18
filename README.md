@@ -12,7 +12,7 @@ The idea behind the app was to help my wife and her equestrian friends to manage
 - **Backend**: Python
 - **Frontend**: HTML, CSS and some JavaScript
 - **Database**: PostgreSQL
-- **Other**: Font Awesome, FullCalendar
+- **Other**: Font Awesome, FullCalendar, pytest/pytest-django
 
 
 ### Setup:
@@ -37,6 +37,11 @@ Please have in mind that the content of the app is made in Polish language. All 
 You are free to use, modify, and distribute this application for your private, personal use.
 
 
+### Tests:
+I have made a total of 104 tests (for 32 views):
+![tests](visualization/tests.png)
+For more details about the tests go to the tests.py file in each of the apps (patataj, accounts, kalendarz).
+
 ### Visualization:
 1. **Homepage:**
 ![Homepage](visualization/Homepage.png)
@@ -46,6 +51,7 @@ You are free to use, modify, and distribute this application for your private, p
 ![TrainingPlan](visualization/TrainingPlanDetails.png)
 4. **Add Horse:**
 ![AddHorse](visualization/AddHorse.png)
+
 
 ## Author:
 - **email**: mateusz.marciszm@gmail.com
