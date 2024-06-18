@@ -31,7 +31,7 @@ body {
 
 .topnav a {
     text-align: center;
-    padding: 20px 30px;
+    padding: 20px 20px;
     text-decoration: none;
     font-size: 20px;
     color: black;
@@ -41,7 +41,7 @@ body {
     background-color: #E6E6FA;
     color: black;
     text-align: center;
-    padding: 20px 30px;
+    padding: 20px 20px;
     text-decoration: none;
     font-size: 20px;
 }
@@ -50,7 +50,8 @@ body {
     background-color: #FFB6C1;
     color: #CD5C5C;
     font-family: "Brush Script MT", cursive, sans-serif;
-    font-size: 25px;
+    font-size: 28px;
+    padding: 20px 30px;
 }
 
 .topnav a.logo:hover {
@@ -63,12 +64,6 @@ body {
     background-color: #E0FFFF;
 }
 
-/*.content {*/
-/*    background-color: whitesmoke;*/
-/*    margin-top: 0px;*/
-/*    padding: 20px;*/
-/*    flex-grow: 1;*/
-/*}*/
 
 .content {
     background-image: url('images/mysz_vertical.jpg');
@@ -394,11 +389,13 @@ a.btn-inline-cancel:hover {
     margin-bottom: 10px;
 }
 
+/* Calendar */
+
 #calendar {
     /*max-width: 1200px;*/
     margin: 0 auto;
     padding: 20px;
-    background-color: rgba(255, 255, 255, 0.9);  /* Make the calendar background slightly transparent */
+    background-color: rgba(255, 255, 255, 0.9);
     border-radius: 10px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
@@ -413,6 +410,65 @@ a.btn-inline-cancel:hover {
     background-color: #87CEFA;
     color: black; /* Kolor tekstu wydarzenia */
     border: none; /* Usuń obramowanie, jeśli jest niepotrzebne */
+}
+
+
+/* Homepage */
+
+.transparency-description {
+    background-color: rgba(255, 255, 255, 0.8); /* Półprzezroczysty biały kolor */
+    padding: 20px;
+    border-radius: 10px;
+    width: 70%;
+    margin: 20px auto;
+    text-align: justify;
+}
+
+.big-title-description {
+    font-size: 3em;
+    font-weight: bold;
+    margin-bottom: 20px;
+    text-align: center;
+    color: black; /* Kolor tekstu */
+}
+
+.logo {
+    /*background-color: #FFB6C1;*/
+    color: #CD5C5C;
+    font-family: "Brush Script MT", cursive, sans-serif;
+    font-size: 1.5em;
+}
+
+.box-container {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 70px;
+}
+
+.box {
+    background-color: rgba(255, 255, 255, 0.8); /* Półprzezroczysty biały kolor */
+    padding: 20px;
+    border-radius: 10px;
+    width: 28%;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Opcjonalne: dodanie cienia */
+    text-align: center;
+}
+
+.box h2 {
+    font-size: 2em;
+    margin-bottom: 10px;
+    color: black; /* Kolor tekstu */
+}
+
+.box p {
+    font-size: 1.4em;
+    color: black; /* Kolor tekstu */
+    text-align: justify;
+}
+
+.box i {
+    color: rgba(205, 92, 92, 0.9);
+    margin: 20px;
 }
 
 /*No modal after all*/

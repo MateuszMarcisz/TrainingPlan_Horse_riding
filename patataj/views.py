@@ -26,7 +26,7 @@ def pagination(request, queryset, items_per_page=5):
 # Create your views here.
 class HomeView(View):
     def get(self, request):
-        return render(request, 'base.html')
+        return render(request, 'patataj/homepage.html')
 
 
 class TestView(LoginRequiredMixin, View):

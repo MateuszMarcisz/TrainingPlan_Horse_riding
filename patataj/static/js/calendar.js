@@ -51,7 +51,7 @@ document.addEventListener('DOMContentLoaded', function () {
             window.location.href = addEventUrl + "?date=" + dateStr;
         },
         eventClick: function(info) {
-            var eventId = info.event.id;  // Assuming you have an 'id' property on your event object
+            var eventId = info.event.id;
             window.location.href = '/calendar/event/' + eventId + '/';
         }
     });
