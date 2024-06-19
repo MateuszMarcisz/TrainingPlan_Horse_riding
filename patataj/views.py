@@ -578,7 +578,7 @@ class TrainingToAnyPlanAdd(UserPassesTestMixin, View):
     def post(self, request):
         form = TrainingToAnyPlanForm(request.POST, user=request.user)
         if form.is_valid():
-            # We do not commit yet, we do it this wierd way to so we can redirect user to the plan detail
+            # We do not commit yet, we need to get missing data
             training_plan = form.save(commit=False)
 
             # Fetch the selected plan from the form data
@@ -595,16 +595,16 @@ class TrainingToAnyPlanAdd(UserPassesTestMixin, View):
         return render(request, 'patataj/AddTrainingToAnyPlan.html', {'form': form})
 
 
-class DeleteTrainingFromPlanView(LoginRequiredMixin, View):
+class DeleteTrainingFromPlanView(UserPassesTestMixin, View):
+    def test_func(self):
+        training_plan = get_object_or_404(TrainingPlan, pk=self.kwargs['pk'])
+        return training_plan.plan.user == self.request.user
+
     def get(self, request, pk):
         training_plan = get_object_or_404(TrainingPlan, pk=pk)
-        if training_plan.plan.user != request.user:
-            HttpResponseForbidden()
         return render(request, 'patataj/DeleteTrainingFromPlanConfirmation.html', {'training_plan': training_plan})
 
     def post(self, request, pk):
         training_plan = get_object_or_404(TrainingPlan, pk=pk)
-        if training_plan.plan.user != request.user:
-            HttpResponseForbidden()
         training_plan.delete()
         return redirect('plan_detail', pk=training_plan.plan.pk)
