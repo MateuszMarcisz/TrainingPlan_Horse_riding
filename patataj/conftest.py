@@ -76,15 +76,15 @@ def trainer():
 
 
 @pytest.fixture
-def training_plans():
+def training_plans(trainer, training, horse, plan):
     lst = []
     for i in range(15):
         lst.append(TrainingPlan.objects.create(
-            training_id=1,
-            horse_id=1,
-            plan_id=1,
+            training_id=training.id,
+            horse_id=horse.id,
+            plan_id=plan.id,
             day='WT',
-            trainer_id=1,
+            trainer_id=trainer.id,
             time='06:45:00'
         ))
     return lst

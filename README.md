@@ -3,7 +3,7 @@
 ## Description:
 
 This app was made for my project during python programming course at [CodersLab](https://github.com/CodersLab). It was developed after approximately 2 months of learning.
-The idea behind the app was to help my wife and her equestrian friends to manage training plans and save some events in calendar. Please note that the app is in Polish.
+The idea behind the app was to help my wife and her equestrian friends to manage training plans and save some events in calendar. Please note that the content of the app is in Polish.
 
 
 ## Technologies:
@@ -19,7 +19,8 @@ The idea behind the app was to help my wife and her equestrian friends to manage
 It's straightforward:
 1. Clone repository.
 2. Install dependencies from requirements.txt
-3. Make migrations and run the dev server.
+3. Setup you DB, make migrations
+4. Run the dev server.
 
 
 ### Usage:
@@ -40,7 +41,7 @@ You are free to use, modify, and distribute this application for your private, p
 ### Tests:
 I have made a total of 104 tests for 32 views. Sample of testing for main app views:
 ![tests](visualization/tests.png)
-For more details about the tests go to the tests.py file in each of the apps (patataj, accounts, kalendarz).
+For more details about the tests go to the tests.py files in each of the apps (patataj, accounts, kalendarz).
 
 ### Visualization:
 1. **Homepage:**

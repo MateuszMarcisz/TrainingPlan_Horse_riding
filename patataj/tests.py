@@ -1062,7 +1062,7 @@ def test_add_training_to_any_plan_post_missing_data(user, plan, training, horse,
 
 
 @pytest.mark.django_db
-def test_delete_training_from_plan(user, horse, training_plans, plan, trainer, training):
+def test_delete_training_from_plan(user, training_plans):
     client = Client()
     client.force_login(user)
     # training_plan = TrainingPlan.objects.get(id=1)
