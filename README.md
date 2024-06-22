@@ -21,10 +21,7 @@ The idea behind the app was to help my wife and her equestrian friends to manage
 2. Install docker & docker-compose / docker desktop
 3. Change .env.example name to .env and make adjustments
 4. Run in the terminal: docker compose up --build
-5. Make migrations:
- - docker-compose exec web python manage.py makemigrations
- - docker-compose exec web python manage.py migrate
-6. Go to: http://0.0.0.0:8000/
+5. Go to: http://0.0.0.0:8000/
 
 
 
