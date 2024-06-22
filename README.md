@@ -12,15 +12,17 @@ The idea behind the app was to help my wife and her equestrian friends to manage
 - **Backend**: Python
 - **Frontend**: HTML, CSS and some JavaScript
 - **Database**: PostgreSQL
-- **Other**: Font Awesome, FullCalendar, pytest/pytest-django
+- **Other**: Docker Desktop, Font Awesome, FullCalendar, pytest/pytest-django
 
 
 ### Setup:
-It's straightforward:
+<i>You will need Docker in order to make it work (or make some adjustments in settings and set up DB)</i>
 1. Clone repository.
-2. Install dependencies from requirements.txt
-3. Setup you DB, make migrations
-4. Run the dev server.
+2. Install docker & docker-compose / docker desktop
+3. Change .env.example name to .env and make adjustments
+4. Run in the terminal: docker compose up --build
+5. Go to: http://0.0.0.0:8000/
+
 
 
 ### Usage:
