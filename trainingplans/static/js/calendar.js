@@ -52,7 +52,7 @@ document.addEventListener('DOMContentLoaded', function () {
         },
         eventClick: function(info) {
             var eventId = info.event.id;
-            window.location.href = '/calendar/event/' + eventId + '/';
+            window.location.href = '/kalendarz/event/' + eventId + '/';
         }
     });
     calendar.render();

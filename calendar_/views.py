@@ -10,7 +10,7 @@ from django.middleware.csrf import get_token
 class CalendarView(View):
     def get(self, request):
         events = Event.objects.all()
-        return render(request, 'kalendarz/calendar.html', {'events': events})
+        return render(request, 'calendar/calendar.html', {'events': events})
 
 
 class AddEventView(LoginRequiredMixin, View):
@@ -22,7 +22,7 @@ class AddEventView(LoginRequiredMixin, View):
             initial_data['end_time'] = f"{date}T19:00"
 
         form = EventForm(initial=initial_data)
-        return render(request, 'kalendarz/add_event.html', {'form': form})
+        return render(request, 'calendar/add_event.html', {'form': form})
 
     def post(self, request):
         form = EventForm(request.POST)
@@ -31,13 +31,13 @@ class AddEventView(LoginRequiredMixin, View):
             event.user = request.user
             event.save()
             return redirect('calendar')
-        return render(request, 'kalendarz/add_event.html', {'form': form})
+        return render(request, 'calendar/add_event.html', {'form': form})
 
 
 class EventDetailView(View):
     def get(self, request, pk):
         event = get_object_or_404(Event, id=pk)
-        return render(request, 'kalendarz/event_detail.html', {'event': event})
+        return render(request, 'calendar/event_detail.html', {'event': event})
 
 
 class EventEditView(UserPassesTestMixin, View):
@@ -49,7 +49,7 @@ class EventEditView(UserPassesTestMixin, View):
     def get(self, request, pk):
         event = get_object_or_404(Event, pk=pk)
         form = EventEditForm(instance=event)
-        return render(request, 'kalendarz/edit_event.html', {'form': form, 'event': event})
+        return render(request, 'calendar/edit_event.html', {'form': form, 'event': event})
 
     def post(self, request, pk):
         event = get_object_or_404(Event, pk=pk)
@@ -57,7 +57,7 @@ class EventEditView(UserPassesTestMixin, View):
         if form.is_valid():
             form.save()
             return redirect('calendar')
-        return render(request, 'kalendarz/edit_event.html', {'form': form, 'event': event})
+        return render(request, 'calendar/edit_event.html', {'form': form, 'event': event})
 
 
 class EventDeleteView(UserPassesTestMixin, View):
@@ -68,7 +68,7 @@ class EventDeleteView(UserPassesTestMixin, View):
 
     def get(self, request, pk):
         event = get_object_or_404(Event, pk=pk)
-        return render(request, 'kalendarz/event_delete_confirm.html', {'event': event})
+        return render(request, 'calendar/event_delete_confirm.html', {'event': event})
 
     def post(self, request, pk):
         event = get_object_or_404(Event, pk=pk)

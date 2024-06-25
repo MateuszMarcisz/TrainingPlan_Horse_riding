@@ -3,4 +3,4 @@ from django.apps import AppConfig
 
 class KalendarzConfig(AppConfig):
     default_auto_field = 'django.db.models.BigAutoField'
-    name = 'kalendarz'
+    name = 'calendar_'

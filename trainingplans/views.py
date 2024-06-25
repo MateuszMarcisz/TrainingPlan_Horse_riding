@@ -6,9 +6,9 @@ from django.views import View
 from django.views.generic import TemplateView
 from django.contrib import messages
 
-from patataj import models
-from patataj.forms import TrainingPlanForm, TrainingToAnyPlanForm, TrainerForm
-from patataj.models import Training, TrainingType, Plan, Horse, Trainer, TrainingPlan, TrainingPlanDay
+from trainingplans import models
+from trainingplans.forms import TrainingPlanForm, TrainingToAnyPlanForm, TrainerForm
+from trainingplans.models import Training, TrainingType, Plan, Horse, Trainer, TrainingPlan, TrainingPlanDay
 
 
 def pagination(request, queryset, items_per_page=5):
@@ -26,12 +26,12 @@ def pagination(request, queryset, items_per_page=5):
 # Create your views here.
 class HomeView(View):
     def get(self, request):
-        return render(request, 'patataj/homepage.html')
+        return render(request, 'trainingplans/homepage.html')
 
 
 class TestView(LoginRequiredMixin, View):
     def get(self, request):
-        return render(request, 'patataj/test.html')
+        return render(request, 'trainingplans/test.html')
 
 
 class TrainingListView(View):
@@ -59,7 +59,7 @@ class TrainingListView(View):
         # Pagination
         page_object = pagination(request, trainings)
 
-        return render(request, 'patataj/TrainingList.html', {
+        return render(request, 'trainingplans/TrainingList.html', {
             'page_object': page_object,  # Pass paginated queryset to template
             'training_type_choices': training_type_choices
         })
@@ -68,13 +68,13 @@ class TrainingListView(View):
 class TrainingDetailView(View):
     def get(self, request, pk):
         training = get_object_or_404(Training, pk=pk)
-        return render(request, 'patataj/TrainingDetail.html', {'training': training})
+        return render(request, 'trainingplans/TrainingDetail.html', {'training': training})
 
 
 class AddTrainingView(LoginRequiredMixin, View):
     def get(self, request):
         training_type_choices = TrainingType.choices
-        return render(request, 'patataj/AddTraining.html', {'training_type_choices': training_type_choices})
+        return render(request, 'trainingplans/AddTraining.html', {'training_type_choices': training_type_choices})
 
     def post(self, request):
         name = request.POST.get('name')
@@ -93,7 +93,7 @@ class AddTrainingView(LoginRequiredMixin, View):
         if not description:
             errors['description'] = 'Opis wymagany!'
         if errors:
-            return render(request, 'patataj/AddTraining.html', {
+            return render(request, 'trainingplans/AddTraining.html', {
                 'errors': errors,
                 'name': name,
                 'training_type': training_type,
@@ -112,7 +112,7 @@ class AddTrainingView(LoginRequiredMixin, View):
             return redirect('training_detail', pk=training.pk)
 
         except Exception as e:
-            return render(request, 'patataj/AddTraining.html', {
+            return render(request, 'trainingplans/AddTraining.html', {
                 'errors': e,
                 'training_type_choices': training_type_choices
             })
@@ -121,7 +121,7 @@ class AddTrainingView(LoginRequiredMixin, View):
 class DeleteTrainingView(LoginRequiredMixin, View):
     def get(self, request, pk):
         training = get_object_or_404(Training, pk=pk)
-        return render(request, 'patataj/DeleteConfirmation.html', {'training': training})
+        return render(request, 'trainingplans/DeleteConfirmation.html', {'training': training})
 
     def post(self, request, pk):
         training = get_object_or_404(Training, pk=pk)
@@ -133,7 +133,7 @@ class EditTrainingView(LoginRequiredMixin, View):
     def get(self, request, pk):
         training = get_object_or_404(Training, pk=pk)
         training_type_choices = TrainingType.choices
-        return render(request, 'patataj/TrainingEdit.html', {
+        return render(request, 'trainingplans/TrainingEdit.html', {
             'training': training,
             'training_type_choices': training_type_choices
         })
@@ -156,7 +156,7 @@ class EditTrainingView(LoginRequiredMixin, View):
         if not description:
             errors['description'] = 'Opis wymagany!'
         if errors:
-            return render(request, 'patataj/TrainingEdit.html', {
+            return render(request, 'trainingplans/TrainingEdit.html', {
                 'errors': errors,
                 'name': name,
                 'training_type': training_type,
@@ -175,7 +175,7 @@ class EditTrainingView(LoginRequiredMixin, View):
             return redirect('training_detail', pk=training.pk)
 
         except Exception as e:
-            return render(request, 'patataj/TrainingEdit.html', {
+            return render(request, 'trainingplans/TrainingEdit.html', {
                 'errors': e,
                 'training_type_choices': training_type_choices
             })
@@ -189,7 +189,7 @@ class PlanListView(LoginRequiredMixin, View):
             plans = plans.filter(name__icontains=name)
         # see pagination function for some explanation of pagination
         page_object = pagination(request, plans)
-        return render(request, 'patataj/PlanList.html', {'page_object': page_object})
+        return render(request, 'trainingplans/PlanList.html', {'page_object': page_object})
 
 
 class PlanDetailView(UserPassesTestMixin, View):
@@ -210,7 +210,7 @@ class PlanDetailView(UserPassesTestMixin, View):
         # We show only days that have something happening in them (so there is a training in those days)
         trainings_by_day = {day: trainings for day, trainings in trainings_by_day.items() if trainings}
 
-        return render(request, 'patataj/PlanDetail.html', {
+        return render(request, 'trainingplans/PlanDetail.html', {
             'plan': plan,
             'trainings_by_day': trainings_by_day,
         })
@@ -218,7 +218,7 @@ class PlanDetailView(UserPassesTestMixin, View):
 
 class AddPlanView(LoginRequiredMixin, View):
     def get(self, request):
-        return render(request, 'patataj/AddPlan.html')
+        return render(request, 'trainingplans/AddPlan.html')
 
     def post(self, request):
         name = request.POST.get('name')
@@ -229,7 +229,7 @@ class AddPlanView(LoginRequiredMixin, View):
         if not description:
             errors['description'] = 'Opis wymagany!'
         if errors:
-            return render(request, 'patataj/AddPlan.html', {
+            return render(request, 'trainingplans/AddPlan.html', {
                 'errors': errors,
                 'name': name,
                 'description': description,
@@ -244,7 +244,7 @@ class AddPlanView(LoginRequiredMixin, View):
             return redirect('plan_detail', pk=plan.pk)
 
         except Exception as e:
-            return render(request, 'patataj/AddPlan.html', {
+            return render(request, 'trainingplans/AddPlan.html', {
                 'errors': e,
             })
 
@@ -256,7 +256,7 @@ class DeletePlanView(UserPassesTestMixin, View):
 
     def get(self, request, pk):
         plan = get_object_or_404(Plan, pk=pk)
-        return render(request, 'patataj/DeletePlanConfirmation.html', {'plan': plan})
+        return render(request, 'trainingplans/DeletePlanConfirmation.html', {'plan': plan})
 
     def post(self, request, pk):
         plan = get_object_or_404(Plan, pk=pk)
@@ -271,7 +271,7 @@ class EditPlanView(UserPassesTestMixin, View):
 
     def get(self, request, pk):
         plan = get_object_or_404(Plan, pk=pk)
-        return render(request, 'patataj/PlanEdit.html', {'plan': plan})
+        return render(request, 'trainingplans/PlanEdit.html', {'plan': plan})
 
     def post(self, request, pk):
         plan = get_object_or_404(Plan, pk=pk)
@@ -283,7 +283,7 @@ class EditPlanView(UserPassesTestMixin, View):
         if not description:
             errors['description'] = 'Opis wymagany!'
         if errors:
-            return render(request, 'patataj/PlanEdit.html', {
+            return render(request, 'trainingplans/PlanEdit.html', {
                 'errors': errors,
                 'name': name,
                 'description': description,
@@ -295,7 +295,7 @@ class EditPlanView(UserPassesTestMixin, View):
             plan.save()
             return redirect('plan_detail', pk=plan.pk)
         except Exception as e:
-            return render(request, 'patataj/PlanEdit.html', {'errors': e})
+            return render(request, 'trainingplans/PlanEdit.html', {'errors': e})
 
 
 class HorseListView(LoginRequiredMixin, View):
@@ -306,7 +306,7 @@ class HorseListView(LoginRequiredMixin, View):
             horses = horses.filter(name__icontains=name)
         # see pagination function for details
         page_object = pagination(request, horses)
-        return render(request, 'patataj/HorseList.html', {'page_object': page_object})
+        return render(request, 'trainingplans/HorseList.html', {'page_object': page_object})
 
 
 class HorseDetailView(UserPassesTestMixin, View):
@@ -316,12 +316,12 @@ class HorseDetailView(UserPassesTestMixin, View):
 
     def get(self, request, pk):
         horse = get_object_or_404(Horse, pk=pk)
-        return render(request, 'patataj/HorseDetail.html', {'horse': horse})
+        return render(request, 'trainingplans/HorseDetail.html', {'horse': horse})
 
 
 class AddHorseView(LoginRequiredMixin, View):
     def get(self, request):
-        return render(request, 'patataj/AddHorse.html')
+        return render(request, 'trainingplans/AddHorse.html')
 
     def post(self, request):
         name = request.POST.get('name')
@@ -332,7 +332,7 @@ class AddHorseView(LoginRequiredMixin, View):
         if not description:
             errors['description'] = 'Opis konia jest wymagany!'
         if errors:
-            return render(request, 'patataj/AddHorse.html', {
+            return render(request, 'trainingplans/AddHorse.html', {
                 'errors': errors,
                 'name': name,
                 'description': description,
@@ -347,7 +347,7 @@ class AddHorseView(LoginRequiredMixin, View):
             return redirect('horse_detail', pk=plan.pk)
 
         except Exception as e:
-            return render(request, 'patataj/AddHorse.html', {
+            return render(request, 'trainingplans/AddHorse.html', {
                 'errors': e,
             })
 
@@ -359,7 +359,7 @@ class DeleteHorseView(UserPassesTestMixin, View):
 
     def get(self, request, pk):
         horse = get_object_or_404(Horse, pk=pk)
-        return render(request, 'patataj/DeleteHorseConfirmation.html', {'horse': horse})
+        return render(request, 'trainingplans/DeleteHorseConfirmation.html', {'horse': horse})
 
     def post(self, request, pk):
         horse = get_object_or_404(Horse, pk=pk)
@@ -374,7 +374,7 @@ class EditHorseView(UserPassesTestMixin, View):
 
     def get(self, request, pk):
         horse = get_object_or_404(Horse, pk=pk)
-        return render(request, 'patataj/HorseEdit.html', {'horse': horse})
+        return render(request, 'trainingplans/HorseEdit.html', {'horse': horse})
 
     def post(self, request, pk):
         horse = get_object_or_404(Horse, pk=pk)
@@ -386,7 +386,7 @@ class EditHorseView(UserPassesTestMixin, View):
         if not description:
             errors['description'] = 'Opis konia jest wymagany!'
         if errors:
-            return render(request, 'patataj/HorseEdit.html', {
+            return render(request, 'trainingplans/HorseEdit.html', {
                 'errors': errors,
                 'name': name,
                 'description': description,
@@ -398,7 +398,7 @@ class EditHorseView(UserPassesTestMixin, View):
             horse.save()
             return redirect('horse_detail', pk=horse.pk)
         except Exception as e:
-            return render(request, 'patataj/HorseEdit.html', {'errors': e})
+            return render(request, 'trainingplans/HorseEdit.html', {'errors': e})
 
 
 class TrainerListView(View):
@@ -417,7 +417,7 @@ class TrainerListView(View):
         # Pagination
         page_object = pagination(request, trainers)
 
-        return render(request, 'patataj/TrainerList.html', {
+        return render(request, 'trainingplans/TrainerList.html', {
             'page_object': page_object,
             'training_type_choices': training_type_choices
         })
@@ -426,14 +426,14 @@ class TrainerListView(View):
 class TrainerDetailView(View):
     def get(self, request, pk):
         trainer = get_object_or_404(Trainer, pk=pk)
-        return render(request, 'patataj/TrainerDetail.html', {'trainer': trainer})
+        return render(request, 'trainingplans/TrainerDetail.html', {'trainer': trainer})
 
 
 class AddTrainerView(LoginRequiredMixin, View):
 
     def get(self, request):
         form = TrainerForm()
-        return render(request, 'patataj/AddTrainer.html', {'form': form})
+        return render(request, 'trainingplans/AddTrainer.html', {'form': form})
 
     def post(self, request):
         form = TrainerForm(request.POST)
@@ -441,7 +441,7 @@ class AddTrainerView(LoginRequiredMixin, View):
             trainer = form.save()
             return redirect('trainer_detail', pk=trainer.pk)
         else:
-            return render(request, 'patataj/AddTrainer.html', {'form': form})
+            return render(request, 'trainingplans/AddTrainer.html', {'form': form})
 
     # def get(self, request):
     #     training_type_choices = TrainingType.choices
@@ -486,7 +486,7 @@ class AddTrainerView(LoginRequiredMixin, View):
 class DeleteTrainerView(LoginRequiredMixin, View):
     def get(self, request, pk):
         trainer = get_object_or_404(Trainer, pk=pk)
-        return render(request, 'patataj/DeleteTrainerConfirmation.html', {'trainer': trainer})
+        return render(request, 'trainingplans/DeleteTrainerConfirmation.html', {'trainer': trainer})
 
     def post(self, request, pk):
         trainer = get_object_or_404(Trainer, pk=pk)
@@ -498,7 +498,7 @@ class EditTrainerView(LoginRequiredMixin, View):
     def get(self, request, pk):
         trainer = get_object_or_404(Trainer, pk=pk)
         training_type_choices = TrainingType.choices
-        return render(request, 'patataj/TrainerEdit.html', {
+        return render(request, 'trainingplans/TrainerEdit.html', {
             'trainer': trainer,
             'training_type_choices': training_type_choices
         })
@@ -517,7 +517,7 @@ class EditTrainerView(LoginRequiredMixin, View):
         if not description:
             errors['description'] = 'Opis trenera jest wymagany!'
         if errors:
-            return render(request, 'patataj/TrainerEdit.html', {
+            return render(request, 'trainingplans/TrainerEdit.html', {
                 'errors': errors,
                 'name': name,
                 'training_type': training_type,
@@ -534,7 +534,7 @@ class EditTrainerView(LoginRequiredMixin, View):
             return redirect('trainer_detail', pk=trainer.pk)
 
         except Exception as e:
-            return render(request, 'patataj/TrainerEdit.html', {
+            return render(request, 'trainingplans/TrainerEdit.html', {
                 'errors': e,
                 'training_type_choices': training_type_choices
             })
@@ -548,7 +548,7 @@ class TrainingToPlanAdd(UserPassesTestMixin, View):
     def get(self, request, pk):
         plan = get_object_or_404(Plan, pk=pk)
         form = TrainingPlanForm(user=request.user)
-        return render(request, 'patataj/AddTrainingToPlan.html', {
+        return render(request, 'trainingplans/AddTrainingToPlan.html', {
             'plan': plan,
             'form': form
         })
@@ -561,7 +561,7 @@ class TrainingToPlanAdd(UserPassesTestMixin, View):
             training_plan.plan = plan
             training_plan.save()
             return redirect('plan_detail', pk=plan.pk)
-        return render(request, 'patataj/AddTrainingToPlan.html', {
+        return render(request, 'trainingplans/AddTrainingToPlan.html', {
             'plan': plan,
             'form': form
         })
@@ -573,7 +573,7 @@ class TrainingToAnyPlanAdd(UserPassesTestMixin, View):
 
     def get(self, request):
         form = TrainingToAnyPlanForm(user=request.user)
-        return render(request, 'patataj/AddTrainingToAnyPlan.html', {'form': form})
+        return render(request, 'trainingplans/AddTrainingToAnyPlan.html', {'form': form})
 
     def post(self, request):
         form = TrainingToAnyPlanForm(request.POST, user=request.user)
@@ -592,7 +592,7 @@ class TrainingToAnyPlanAdd(UserPassesTestMixin, View):
             # Redirect to the plan_detail
             return redirect('plan_detail', pk=plan.pk)
 
-        return render(request, 'patataj/AddTrainingToAnyPlan.html', {'form': form})
+        return render(request, 'trainingplans/AddTrainingToAnyPlan.html', {'form': form})
 
 
 class DeleteTrainingFromPlanView(UserPassesTestMixin, View):
@@ -602,7 +602,7 @@ class DeleteTrainingFromPlanView(UserPassesTestMixin, View):
 
     def get(self, request, pk):
         training_plan = get_object_or_404(TrainingPlan, pk=pk)
-        return render(request, 'patataj/DeleteTrainingFromPlanConfirmation.html', {'training_plan': training_plan})
+        return render(request, 'trainingplans/DeleteTrainingFromPlanConfirmation.html', {'training_plan': training_plan})
 
     def post(self, request, pk):
         training_plan = get_object_or_404(TrainingPlan, pk=pk)
