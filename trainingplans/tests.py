@@ -3,8 +3,8 @@ from django.contrib.auth.models import User
 from django.test import TestCase, Client
 from django.urls import reverse
 
-from patataj import models
-from patataj.models import Training, Plan, Horse, Trainer, TrainingPlan
+from trainingplans import models
+from trainingplans.models import Training, Plan, Horse, Trainer, TrainingPlan
 
 
 # Create your tests here.

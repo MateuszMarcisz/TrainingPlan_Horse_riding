@@ -5,8 +5,8 @@ from django.contrib.auth.models import User
 from django.test import TestCase, Client
 from django.urls import reverse
 
-from kalendarz.forms import EventForm
-from kalendarz.models import Event
+from calendar_.forms import EventForm
+from calendar_.models import Event
 
 
 # Create your tests here.

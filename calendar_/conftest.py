@@ -1,7 +1,7 @@
 import pytest
 from django.contrib.auth.models import User
 
-from kalendarz.models import Event
+from calendar_.models import Event
 
 
 @pytest.fixture

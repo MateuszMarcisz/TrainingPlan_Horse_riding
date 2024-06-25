@@ -1,7 +1,7 @@
 import pytest
 from django.contrib.auth.models import User
 
-from patataj.models import Training, Plan, Horse, Trainer, TrainingPlan
+from trainingplans.models import Training, Plan, Horse, Trainer, TrainingPlan
 
 
 @pytest.fixture
