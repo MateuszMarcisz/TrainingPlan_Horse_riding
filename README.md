@@ -18,10 +18,9 @@ The idea behind the app was to help my wife and her equestrian friends to manage
 ### Setup:
 <i>You will need Docker in order to make it work (or make some adjustments in settings and set up DB)</i>
 1. Clone repository.
-2. Install docker & docker-compose / docker desktop
-3. Change .env.example name to .env and make adjustments
-4. Run in the terminal: docker compose up --build
-5. Go to: http://0.0.0.0:8000/
+2. Change .env.example name to .env and make adjustments
+3. Run in the terminal: docker compose up --build
+4. Go to: http://0.0.0.0:8000/
 
 
 
@@ -43,7 +42,7 @@ You are free to use, modify, and distribute this application for your private, p
 ### Tests:
 I have made a total of 104 tests for 32 views. Sample of testing for main app views:
 ![tests](visualization/tests.png)
-For more details about the tests go to the tests.py files in each of the apps (patataj, accounts, kalendarz).
+For more details about the tests go to the tests.py files in each of the apps (trainingplans, accounts, calendar_).
 
 ### Visualization:
 1. **Homepage:**
