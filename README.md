@@ -42,7 +42,7 @@ You are free to use, modify, and distribute this application for your private, p
 ### Tests:
 I have made a total of 104 tests for 32 views. Sample of testing for main app views:
 ![tests](visualization/tests.png)
-For more details about the tests go to the tests.py files in each of the apps (patataj, accounts, kalendarz).
+For more details about the tests go to the tests.py files in each of the apps (trainingplans, accounts, calendar_).
 
 ### Visualization:
 1. **Homepage:**
