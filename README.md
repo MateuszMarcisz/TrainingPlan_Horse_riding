@@ -12,7 +12,7 @@ The idea behind the app was to help my wife and her equestrian friends to manage
 - **Backend**: Python
 - **Frontend**: HTML, CSS and some JavaScript
 - **Database**: PostgreSQL
-- **Other**: Docker Desktop, Font Awesome, FullCalendar, pytest/pytest-django
+- **Other**: Docker Desktop, Font Awesome, FullCalendar, pytest/pytest-django, venv
 
 
 ### Setup:
