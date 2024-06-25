@@ -18,10 +18,9 @@ The idea behind the app was to help my wife and her equestrian friends to manage
 ### Setup:
 <i>You will need Docker in order to make it work (or make some adjustments in settings and set up DB)</i>
 1. Clone repository.
-2. Install docker & docker-compose / docker desktop
-3. Change .env.example name to .env and make adjustments
-4. Run in the terminal: docker compose up --build
-5. Go to: http://0.0.0.0:8000/
+2. Change .env.example name to .env and make adjustments
+3. Run in the terminal: docker compose up --build
+4. Go to: http://0.0.0.0:8000/
 
 
 
